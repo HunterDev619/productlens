@@ -1,0 +1,44 @@
+import Image from 'next/image';
+import { Outfit } from 'next/font/google';
+
+const outfit = Outfit({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
+
+export function ProblemSection() {
+  return (
+    <section id="problem" className={`bg-slate-50/80 py-12 sm:py-16 ${outfit.className}`}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
+          {/* Left - content */}
+          <div className="flex-1 space-y-6 max-w-xl">
+            <h2 className="text-2xl font-semibold tracking-[-0.03em] leading-[1.2] text-foreground sm:text-3xl md:text-[2.25rem]">
+              LCA Compliance Used to Take Months. Now It Takes Minutes.
+            </h2>
+            <p className="text-base font-normal leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-lg">
+              Traditional lifecycle assessments are expensive, slow, and require specialised
+              consultants. Regulatory pressure is increasing — the EU, UK, and major procurement
+              bodies now demand documented environmental disclosures. ProductLens removes the
+              bottleneck.
+            </p>
+            <p className="text-base font-semibold tracking-[0.02em] text-foreground sm:text-lg">
+              Upload a photo. Get a full, audit-ready analysis.
+            </p>
+          </div>
+
+          {/* Right - image at real size */}
+          <div className="relative flex flex-1 justify-end lg:min-w-[55%]">
+            <div className="overflow-hidden rounded-[1.5rem] border-2 border-white bg-white shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06),0_4px_24px_rgba(0,0,0,0.08)]">
+              <Image
+                src="/assets/problem/problem.png"
+                alt="LCA Compliance - ProductLens solution"
+                width={800}
+                height={600}
+                className="block max-w-full h-auto"
+                sizes="(max-width: 1024px) 100vw, 55vw"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,180 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from '@/hooks/use-toast';
+import { authApi } from '@/services/auth';
+import { tokenStorage } from './cookies';
+
+type AuthGuardProps = {
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+};
+
+/**
+ * Client-side authentication guard component
+ * Redirects to login if user is not authenticated
+ * Proactively refreshes tokens before they expire
+ */
+export const AuthGuard = ({ children, fallback }: AuthGuardProps) => {
+  const router = useRouter();
+  // Start with null to avoid hydration mismatch
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isRefreshingRef = useRef<boolean>(false);
+
+  const refreshToken = useCallback(async (): Promise<boolean> => {
+    const currentRefreshToken = tokenStorage.getRefreshToken();
+    
+    if (!currentRefreshToken || tokenStorage.isRefreshTokenExpired()) {
+      return false;
+    }
+
+    // Prevent concurrent refresh attempts
+    if (isRefreshingRef.current) {
+      return false;
+    }
+
+    isRefreshingRef.current = true;
+
+    try {
+      console.log('[AuthGuard] Refreshing access token...');
+      const response = await authApi.refresh(currentRefreshToken);
+      
+      if (response.error === '00' && response.data?.access_token) {
+        const { access_token, refresh_token: newRefreshToken, expires_in, refresh_expires_in } = response.data;
+        
+        // Store new tokens (backend always returns both)
+        tokenStorage.setToken(access_token, expires_in);
+        tokenStorage.setRefreshToken(newRefreshToken, refresh_expires_in);
+        
+        console.log('[AuthGuard] Token refreshed successfully');
+        return true;
+      }
+      
+      console.error('[AuthGuard] Token refresh failed:', response.message);
+      return false;
+    } catch (error) {
+      console.error('[AuthGuard] Token refresh error:', error);
+      return false;
+    } finally {
+      isRefreshingRef.current = false;
+    }
+  }, []);
+
+  const scheduleTokenRefresh = useCallback(() => {
+    // Clear any existing timeout
+    if (refreshTimeoutRef.current) {
+      clearTimeout(refreshTimeoutRef.current);
+    }
+
+    const timeRemaining = tokenStorage.getTokenTimeRemaining();
+    
+    // Schedule refresh 2 minutes before expiry
+    const refreshBuffer = 2 * 60 * 1000;
+    const refreshIn = Math.max(0, timeRemaining - refreshBuffer);
+
+    if (refreshIn > 0) {
+      refreshTimeoutRef.current = setTimeout(() => {
+        // Re-check authentication which will trigger refresh if needed
+        checkAuth();
+      }, refreshIn);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const checkAuth = useCallback(async () => {
+    const token = tokenStorage.getToken();
+    const currentRefreshToken = tokenStorage.getRefreshToken();
+    
+    // No tokens at all - redirect to login
+    if (!token && !currentRefreshToken) {
+      setIsAuthenticated(false);
+      router.push('/auth/login');
+      return;
+    }
+
+    // Has valid token
+    if (token) {
+      setIsAuthenticated(true);
+      scheduleTokenRefresh();
+      return;
+    }
+    
+    // Has refresh token but no access token - attempt to refresh
+    if (currentRefreshToken && !tokenStorage.isRefreshTokenExpired()) {
+      console.log('[AuthGuard] Access token expired, attempting refresh...');
+      
+      const refreshSuccess = await refreshToken();
+      
+      if (refreshSuccess) {
+        // Successfully refreshed, user is authenticated
+        setIsAuthenticated(true);
+        scheduleTokenRefresh();
+        return;
+      }
+      
+      // Refresh failed - log user out
+      console.error('[AuthGuard] Token refresh failed, logging out user');
+      tokenStorage.clearTokens();
+      setIsAuthenticated(false);
+      
+      toast({
+        title: 'Session Expired',
+        description: 'Your session has expired. Please log in again.',
+        variant: 'error',
+      });
+      
+      router.push('/auth/login?error=session_expired');
+      return;
+    }
+    
+    // All tokens expired
+    console.log('[AuthGuard] All tokens expired, logging out user');
+    tokenStorage.clearTokens();
+    setIsAuthenticated(false);
+    
+    toast({
+      title: 'Session Expired',
+      description: 'Your session has expired. Please log in again.',
+      variant: 'error',
+    });
+    
+    router.push('/auth/login?error=session_expired');
+  }, [router, scheduleTokenRefresh, refreshToken]);
+
+  useEffect(() => {
+    checkAuth();
+    
+    // Check token status periodically (every 30 seconds)
+    const interval = setInterval(checkAuth, 30 * 1000);
+    
+    // Also check when window regains focus (user returns to tab)
+    const handleFocus = () => {
+      checkAuth();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+      if (refreshTimeoutRef.current) {
+        clearTimeout(refreshTimeoutRef.current);
+      }
+    };
+  }, [checkAuth]);
+
+  // Loading state - show fallback immediately without flash
+  if (isAuthenticated === null) {
+    return fallback || null;
+  }
+
+  // Not authenticated - return null (redirect is in progress)
+  if (!isAuthenticated) {
+    return fallback || null;
+  }
+
+  // Authenticated
+  return <>{children}</>;
+};

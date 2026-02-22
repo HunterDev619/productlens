@@ -1,0 +1,48 @@
+name: Production
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute Previous Tag
+        id: prev
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --force --tags
+          current="${GITHUB_REF_NAME}"
+          prev="$(git tag --list 'v*' --sort=-v:refname | grep -v "^${current}$" | head -n 1 || true)"
+          echo "prev=${prev}" >> "$GITHUB_OUTPUT"
+
+      # Create GitHub Release (Full Changelog link)
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          body: |
+            Full Changelog: https://github.com/${{ github.repository }}/compare/${{ steps.prev.outputs.prev }}...${{ github.ref_name }}
+
+      # Deploy to Vercel
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel --prod --yes --token=$VERCEL_TOKEN --name=productlens
