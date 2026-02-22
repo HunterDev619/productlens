@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import { Outfit } from 'next/font/google';
 
@@ -87,10 +87,19 @@ const features = [
 ];
 
 const ANGLE = 30;
+const SPRING = { type: 'spring' as const, stiffness: 220, damping: 28 };
+const DRAG_THRESHOLD = 60;
 
 export function FeaturesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1);
+  const [direction, setDirection] = useState<1 | -1>(1); // 1 = next (right-to-left), -1 = prev (left-to-right)
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const dragOffsetRef = useRef(0);
+  useEffect(() => {
+    dragOffsetRef.current = dragOffset;
+  }, [dragOffset]);
   const n = features.length;
 
   useEffect(() => {
@@ -132,15 +141,54 @@ export function FeaturesSection() {
     };
   }, []);
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     setDirection(-1);
     setActiveIndex((i) => (i - 1 + n) % n);
-  };
+  }, [n]);
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     setDirection(1);
     setActiveIndex((i) => (i + 1) % n);
-  };
+  }, [n]);
+
+  const handleDragStart = useCallback((clientX: number) => {
+    setIsDragging(true);
+    dragStartX.current = clientX;
+    setDragOffset(0);
+  }, []);
+
+  const handleDragMove = useCallback((clientX: number) => {
+    if (!isDragging) return;
+    const diff = clientX - dragStartX.current;
+    setDragOffset(diff);
+  }, [isDragging]);
+
+  const handleDragEnd = useCallback(() => {
+    if (!isDragging) return;
+    const offset = dragOffsetRef.current;
+    if (offset > DRAG_THRESHOLD) goPrev();
+    else if (offset < -DRAG_THRESHOLD) goNext();
+    setDragOffset(0);
+    setIsDragging(false);
+  }, [isDragging, goPrev, goNext]);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent | TouchEvent) =>
+      handleDragMove('touches' in e ? e.touches[0]!.clientX : e.clientX);
+    const onEnd = () => handleDragEnd();
+    if (isDragging) {
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onEnd);
+      window.addEventListener('touchmove', onMove, { passive: true });
+      window.addEventListener('touchend', onEnd);
+    }
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onEnd);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
+    };
+  }, [isDragging, handleDragMove, handleDragEnd]);
 
   const leftIndex = (activeIndex - 1 + n) % n;
   const centerIndex = activeIndex;
@@ -158,87 +206,135 @@ export function FeaturesSection() {
           </h2>
         </div>
 
-        <div className="relative flex min-h-[min(70vh,32rem)] items-center justify-center">
+        <div className="relative flex min-h-[min(70vh,36rem)] items-center justify-center touch-none select-none">
           <div
-            className="relative flex w-full max-w-6xl items-center justify-between gap-4"
-            style={{ perspective: 2000 }}
+            className="relative flex w-full max-w-6xl cursor-grab active:cursor-grabbing items-center justify-center"
+            style={{ perspective: 2000, transformStyle: 'preserve-3d' }}
+            onMouseDown={(e) => handleDragStart(e.clientX)}
+            onTouchStart={(e) => handleDragStart(e.touches[0]!.clientX)}
           >
-            {/* Left card - 30° angle */}
-            <motion.div
-              key={`left-${leftIndex}`}
-              className="absolute left-[5%] top-1/2 w-[min(300px,26vw)] -translate-y-1/2"
-              style={{ zIndex: 1 }}
-              initial={{ opacity: 0, rotate: -ANGLE, x: direction === 1 ? -60 : 60 }}
-              animate={{
-                opacity: 0.9,
-                rotate: -ANGLE,
-                x: 0,
-                scale: 0.92,
+            <div
+              className="relative flex w-full items-center justify-center gap-0"
+              style={{
+                transform: `translateX(${dragOffset}px)`,
+                transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
+                transformStyle: 'preserve-3d',
               }}
-              transition={{ type: 'spring', stiffness: 300, damping: 28 }}
             >
-              <FeatureCard feature={features[leftIndex]!} isCenter={false} />
-            </motion.div>
+              {/* Left card - 30° angle (hidden on mobile) */}
+              <motion.div
+                key={`left-${leftIndex}`}
+                className="absolute left-[2%] top-1/2 hidden w-[min(260px,22vw)] -translate-y-1/2 sm:left-[4%] sm:w-[min(280px,24vw)] lg:left-[6%] lg:block lg:w-[min(300px,26vw)]"
+                style={{
+                  zIndex: 1,
+                  transformOrigin: 'center center',
+                }}
+                initial={false}
+                animate={{
+                  opacity: 0.9,
+                  rotateY: -ANGLE,
+                  x: -20 - (dragOffset > 0 ? Math.min(dragOffset * 0.3, 40) : 0) + (dragOffset < 0 ? Math.max(dragOffset * 0.3, -40) : 0),
+                  scale: 0.88,
+                }}
+                transition={SPRING}
+              >
+                <FeatureCard feature={features[leftIndex]!} isCenter={false} />
+              </motion.div>
+
+              {/* Center card - main, larger - flow right-to-left animation */}
+              <div className="relative z-10 w-[min(320px,90vw)] shrink-0 overflow-visible sm:w-[min(380px,85vw)] md:w-[min(400px,50vw)] lg:w-[min(420px,38vw)]">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={`center-${centerIndex}`}
+                    className="relative w-full"
+                    style={{ transformOrigin: 'center center' }}
+                    custom={direction}
+                    initial={(d) => ({
+                      opacity: 0,
+                      x: d === 1 ? 120 : -120,
+                      scale: 0.96,
+                    })}
+                    animate={{
+                      opacity: 1,
+                      x: dragOffset * 0.5,
+                      scale: 1.08,
+                    }}
+                    exit={(d) => ({
+                      opacity: 0,
+                      x: d === 1 ? -120 : 120,
+                      scale: 0.96,
+                      transition: { duration: 0.28, ease: [0.32, 0.72, 0, 1] },
+                    })}
+                    transition={{
+                      ...SPRING,
+                      opacity: { duration: 0.3 },
+                    }}
+                  >
+                    <FeatureCard feature={features[centerIndex]!} isCenter />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Right card - 30° angle (hidden on mobile) */}
+              <motion.div
+                key={`right-${rightIndex}`}
+                className="absolute right-[2%] top-1/2 hidden w-[min(260px,22vw)] -translate-y-1/2 sm:right-[4%] sm:w-[min(280px,24vw)] lg:right-[6%] lg:block lg:w-[min(300px,26vw)]"
+                style={{
+                  zIndex: 1,
+                  transformOrigin: 'center center',
+                }}
+                initial={false}
+                animate={{
+                  opacity: 0.9,
+                  rotateY: ANGLE,
+                  x: 20 - (dragOffset < 0 ? Math.max(dragOffset * 0.3, -40) : 0) + (dragOffset > 0 ? Math.min(dragOffset * 0.3, 40) : 0),
+                  scale: 0.88,
+                }}
+                transition={SPRING}
+              >
+                <FeatureCard feature={features[rightIndex]!} isCenter={false} />
+              </motion.div>
+            </div>
 
             {/* Left arrow */}
             <button
               type="button"
-              onClick={goPrev}
+              onClick={(e) => {
+                e.stopPropagation();
+                goPrev();
+              }}
               aria-label="Previous feature"
-              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 md:left-4 lg:left-[calc(50%-12rem)] lg:-translate-x-1/2"
+              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 md:left-4 lg:left-[calc(50%-14rem)]"
             >
               <motion.div
                 className="flex size-12 items-center justify-center rounded-full border border-sky-200 bg-white/90 shadow-lg backdrop-blur-sm transition-colors hover:border-sky-200/80 hover:bg-sky-50/80"
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.92 }}
+                transition={SPRING}
               >
                 <CaretLeft size={24} weight="bold" className="text-foreground" />
               </motion.div>
             </button>
 
-            {/* Center card */}
-            <motion.div
-              key={`center-${centerIndex}`}
-              className="relative z-10 w-[min(340px,95vw)] shrink-0 sm:w-[min(360px,85vw)] md:w-[min(360px,45vw)] lg:w-[min(360px,32vw)]"
-              initial={{ opacity: 0, scale: 0.92, x: direction === 1 ? 100 : -100 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            >
-              <FeatureCard feature={features[centerIndex]!} isCenter />
-            </motion.div>
-
-            {/* Right arrow - between center and right */}
+            {/* Right arrow */}
             <button
               type="button"
-              onClick={goNext}
+              onClick={(e) => {
+                e.stopPropagation();
+                goNext();
+              }}
               aria-label="Next feature"
-              className="absolute right-[calc(50%-12rem)] top-1/2 z-20 translate-x-1/2 -translate-y-1/2"
+              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 md:right-4 lg:right-[calc(50%-14rem)]"
             >
               <motion.div
                 className="flex size-12 items-center justify-center rounded-full border border-sky-200 bg-white/90 shadow-lg backdrop-blur-sm transition-colors hover:border-sky-200/80 hover:bg-sky-50/80"
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.92 }}
+                transition={SPRING}
               >
                 <CaretRight size={24} weight="bold" className="text-foreground" />
               </motion.div>
             </button>
-
-            {/* Right card - 30° angle (hidden on mobile/tablet) */}
-            <motion.div
-              key={`right-${rightIndex}`}
-              className="absolute right-[5%] top-1/2 hidden w-[min(300px,26vw)] -translate-y-1/2 lg:block"
-              style={{ zIndex: 1 }}
-              initial={{ opacity: 0, rotate: ANGLE, x: direction === 1 ? 60 : -60 }}
-              animate={{
-                opacity: 0.9,
-                rotate: ANGLE,
-                x: 0,
-                scale: 0.92,
-              }}
-              transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            >
-              <FeatureCard feature={features[rightIndex]!} isCenter={false} />
-            </motion.div>
           </div>
         </div>
       </div>
@@ -258,25 +354,64 @@ function FeatureCard({
       className={`overflow-hidden rounded-2xl border-0 shadow-[0_4px_20px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)] ${
         isCenter ? 'bg-white/98' : 'bg-white/80 backdrop-blur-sm'
       }`}
-      whileHover={isCenter ? { y: -4, boxShadow: '0 12px 40px rgba(0,0,0,0.1)' } : {}}
-      transition={{ duration: 0.2 }}
+      whileHover={
+        isCenter ? { y: -6, boxShadow: '0 16px 48px rgba(0,0,0,0.12)' } : {}
+      }
+      transition={{ type: 'spring', stiffness: 240, damping: 28 }}
     >
-      <FeatureCardContent feature={feature} />
+      <FeatureCardContent feature={feature} isCenter={isCenter} />
     </motion.div>
   );
 }
 
-function FeatureCardContent({ feature }: { feature: (typeof features)[0] }) {
+function FeatureCardContent({
+  feature,
+  isCenter,
+}: {
+  feature: (typeof features)[0];
+  isCenter: boolean;
+}) {
   return (
-    <div className="flex h-full min-h-[260px] flex-col p-4 sm:min-h-[300px] sm:p-6 md:min-h-[320px] md:p-8">
-      <div className="mb-5 flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-100 to-emerald-100 text-3xl">
+    <div
+      className={`flex h-full flex-col p-4 sm:p-6 md:p-8 ${
+        isCenter
+          ? 'min-h-[280px] sm:min-h-[340px] md:min-h-[380px]'
+          : 'min-h-[240px] sm:min-h-[280px] md:min-h-[300px]'
+      }`}
+    >
+      <div
+        className={`mb-4 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-100 to-emerald-100 ${
+          isCenter
+            ? 'flex h-20 w-20 text-4xl'
+            : 'flex h-14 w-14 text-2xl sm:h-16 sm:w-16 sm:text-3xl'
+        }`}
+      >
         {feature.icon}
       </div>
-      <h3 className="mb-2 text-xl font-light tracking-[-0.02em] text-foreground sm:text-2xl md:text-3xl">{feature.title}</h3>
-      <p className="mb-5 text-lg font-light leading-[1.6] tracking-[0.02em] text-muted-foreground sm:text-xl">{feature.subtitle}</p>
-      <ul className="mt-auto space-y-3">
+      <h3
+        className={`mb-2 font-light tracking-[-0.02em] text-foreground ${
+          isCenter
+            ? 'text-2xl sm:text-3xl md:text-4xl'
+            : 'text-lg sm:text-xl md:text-2xl'
+        }`}
+      >
+        {feature.title}
+      </h3>
+      <p
+        className={`mb-4 font-light leading-[1.6] tracking-[0.02em] text-muted-foreground ${
+          isCenter ? 'text-lg sm:text-xl md:text-xl' : 'text-base sm:text-lg'
+        }`}
+      >
+        {feature.subtitle}
+      </p>
+      <ul className="mt-auto space-y-2 sm:space-y-3">
         {feature.bullets.map((bullet) => (
-          <li key={bullet} className="flex items-start gap-3 text-base font-light leading-relaxed sm:text-lg">
+          <li
+            key={bullet}
+            className={`flex items-start gap-3 font-light leading-relaxed ${
+              isCenter ? 'text-base sm:text-lg' : 'text-sm sm:text-base'
+            }`}
+          >
             <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
             <span className="text-emerald-700 tracking-[0.01em]">{bullet}</span>
           </li>

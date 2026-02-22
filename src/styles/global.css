@@ -126,6 +126,13 @@
     'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
 
+  /* Smooth transitions - consistent across entire system */
+  --ease-smooth: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 150ms;
+  --transition-normal: 250ms;
+  --transition-slow: 400ms;
+
   /* Typography scale - for consistent headings across the system */
   --text-display: clamp(2.25rem, 5vw, 3.75rem);
   --text-heading-xl: clamp(1.875rem, 3vw, 2.25rem);
@@ -165,6 +172,31 @@
     letter-spacing: 0.01em;
   }
 
+  /* System-wide smooth transitions for interactive elements */
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [role='button'] {
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-duration: var(--transition-fast);
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  button:active,
+  [role='button']:active {
+    transition-duration: var(--transition-fast);
+  }
+
+  /* Cards and interactive containers */
+  [data-card],
+  [data-interactive] {
+    transition: transform var(--transition-normal) var(--ease-smooth),
+      box-shadow var(--transition-normal) var(--ease-smooth),
+      opacity var(--transition-normal) var(--ease-smooth);
+  }
+
   /* Typography hierarchy */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
@@ -184,17 +216,27 @@
 
 /* Custom Animations */
 @layer utilities {
-  /* Radix UI Animations */
+  /* Radix UI Animations - smooth easing */
   .animate-in {
     animation-name: enter;
-    animation-duration: 150ms;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-duration: 220ms;
+    animation-timing-function: var(--ease-out-expo);
   }
 
   .animate-out {
     animation-name: exit;
-    animation-duration: 150ms;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-duration: 180ms;
+    animation-timing-function: var(--ease-smooth);
+  }
+
+  /* Utility for smooth transitions on any element */
+  .transition-smooth {
+    transition: color var(--transition-normal) var(--ease-smooth),
+      background-color var(--transition-normal) var(--ease-smooth),
+      border-color var(--transition-normal) var(--ease-smooth),
+      box-shadow var(--transition-normal) var(--ease-smooth),
+      transform var(--transition-normal) var(--ease-smooth),
+      opacity var(--transition-normal) var(--ease-smooth);
   }
 
   .fade-in {
@@ -489,6 +531,34 @@ button {
 
 a {
   cursor: pointer !important;
+  transition: color var(--transition-normal) var(--ease-smooth),
+    background-color var(--transition-normal) var(--ease-smooth),
+    opacity var(--transition-normal) var(--ease-smooth),
+    transform var(--transition-normal) var(--ease-smooth);
+}
+
+/* Smoother focus and hover states for inputs */
+input,
+select,
+textarea {
+  transition: border-color var(--transition-fast) var(--ease-smooth),
+    box-shadow var(--transition-fast) var(--ease-smooth),
+    background-color var(--transition-fast) var(--ease-smooth);
+}
+
+/* Smooth scrollbar interaction */
+::-webkit-scrollbar-thumb {
+  transition: background-color var(--transition-fast) var(--ease-smooth);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+/* Smooth page/content transitions */
+main,
+[data-scroll-viewport] {
+  scroll-behavior: smooth;
 }
 
 /* Header nav: letter border / stroke for white text */

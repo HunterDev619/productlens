@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Outfit } from 'next/font/google';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const outfit = Outfit({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
@@ -28,11 +28,11 @@ const steps = [
   },
 ];
 
-// Image arrays for each step - these will cycle every 4 seconds
-const STEP_IMAGES = {
-  upload: ['/assets/analyse/upload1.jpg', '/assets/analyse/upload2.jpg'],
-  analyse: ['/assets/analyse/analyse1.jpg', '/assets/analyse/analyse2.jpg'],
-  report: ['/assets/analyse/report1.jpg', '/assets/analyse/report2.jpg'],
+// Fallback image arrays when images prop is empty or doesn't match
+const STEP_IMAGES_FALLBACK: Record<string, string[]> = {
+  upload: ['/assets/analyse/upload1.jpg', '/assets/analyse/upload2.jpg', '/assets/analyse/upload.png'],
+  analyse: ['/assets/analyse/analyse1.jpg', '/assets/analyse/analyse2.jpg', '/assets/analyse/analyse.png'],
+  report: ['/assets/analyse/report1.jpg', '/assets/analyse/report2.jpg', '/assets/analyse/report.png'],
 };
 
 const DEFAULT_IMAGES = [
@@ -45,9 +45,26 @@ const STEP_IDS = ['upload', 'analyse', 'report'] as const;
 
 const defaultImages: string[] = [];
 
+function buildStepImages(images: string[]): Record<string, string[]> {
+  const result: { upload: string[]; analyse: string[]; report: string[] } = {
+    upload: [],
+    analyse: [],
+    report: [],
+  };
+  for (const img of images) {
+    const name = img.toLowerCase().replace(/^.*\//, '');
+    if (name.includes('upload')) result.upload.push(img);
+    else if (name.includes('analyse') || name.includes('analyze')) result.analyse.push(img);
+    else if (name.includes('report')) result.report.push(img);
+  }
+  for (const stepId of STEP_IDS) {
+    if (result[stepId]!.length === 0) result[stepId] = STEP_IMAGES_FALLBACK[stepId] ?? [];
+  }
+  return result;
+}
+
 export function HowItWorksSection({ images = defaultImages }: { images?: string[] }) {
-  // images prop is kept for API compatibility but we use STEP_IMAGES instead
-  void images;
+  const stepImages = useMemo(() => buildStepImages(images ?? []), [images]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [imageIndex, setImageIndex] = useState(0);
 
@@ -64,7 +81,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
       return undefined;
     }
 
-    const imageArray = STEP_IMAGES[currentStepId as keyof typeof STEP_IMAGES];
+    const imageArray = stepImages[currentStepId];
     if (!imageArray || imageArray.length === 0) {
       return undefined;
     }
@@ -86,7 +103,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
     }
 
     return undefined;
-  }, [activeIndex]);
+  }, [activeIndex, stepImages]);
 
   useEffect(() => {
     const readHash = () => {
@@ -140,8 +157,8 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
       return DEFAULT_IMAGES[activeIndex] ?? DEFAULT_IMAGES[0] ?? '/assets/analyse/upload1.jpg';
     }
 
-    // Get the image array for this specific step
-    const imageArray = STEP_IMAGES[currentStepId as keyof typeof STEP_IMAGES];
+    // Get the image array for this specific step (each step has its own images)
+    const imageArray = stepImages[currentStepId];
 
     // If we have images for this step, use them
     if (imageArray && imageArray.length > 0) {
@@ -218,7 +235,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
           <div className="relative flex-1 overflow-hidden lg:min-w-[55%]">
             <AnimatePresence mode="wait">
               <motion.div
-                key={`${activeIndex}-${imageIndex}`}
+                key={`step-${activeIndex}-img-${imageIndex}`}
                 initial={{ opacity: 0, x: 300 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -300 }}
