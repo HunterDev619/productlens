@@ -243,28 +243,27 @@ export function FeaturesSection() {
 
               {/* Center card - main, larger - flow right-to-left animation */}
               <div className="relative z-10 w-[min(320px,90vw)] shrink-0 overflow-visible sm:w-[min(380px,85vw)] md:w-[min(400px,50vw)] lg:w-[min(420px,38vw)]">
-                <AnimatePresence mode="wait" custom={direction}>
+                <AnimatePresence mode="wait">
                   <motion.div
                     key={`center-${centerIndex}`}
                     className="relative w-full"
                     style={{ transformOrigin: 'center center' }}
-                    custom={direction}
-                    initial={(d) => ({
+                    initial={{
                       opacity: 0,
-                      x: d === 1 ? 120 : -120,
+                      x: direction === 1 ? 120 : -120,
                       scale: 0.96,
-                    })}
+                    }}
                     animate={{
                       opacity: 1,
                       x: dragOffset * 0.5,
                       scale: 1.08,
                     }}
-                    exit={(d) => ({
+                    exit={{
                       opacity: 0,
-                      x: d === 1 ? -120 : 120,
+                      x: direction === 1 ? -120 : 120,
                       scale: 0.96,
                       transition: { duration: 0.28, ease: [0.32, 0.72, 0, 1] },
-                    })}
+                    }}
                     transition={{
                       ...SPRING,
                       opacity: { duration: 0.3 },
