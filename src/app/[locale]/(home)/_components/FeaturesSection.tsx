@@ -14,6 +14,75 @@ function titleToSlug(title: string): string {
     .replace(/–/g, '-');
 }
 
+function FeatureIcon({ emoji, title, imageFile }: { emoji: string; title: string; imageFile?: string }) {
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+  const slug = titleToSlug(title);
+
+  useEffect(() => {
+    if (error) {
+      setImageSrc(null);
+      return;
+    }
+
+    // Paths to try, in order
+    const pathsToTry: string[] = [];
+
+    // 1. If explicit imageFile is provided, try it first
+    if (imageFile) {
+      pathsToTry.push(`/assets/feature/${imageFile}`);
+    }
+
+    // 2. Try slug-based paths (SVG, then PNG)
+    pathsToTry.push(`/assets/feature/${slug}.svg`);
+    pathsToTry.push(`/assets/feature/${slug}.png`);
+
+    // 3. Try title-based paths (case-preserved)
+    pathsToTry.push(`/assets/feature/${title}.svg`);
+    pathsToTry.push(`/assets/feature/${title}.png`);
+
+    let currentIndex = 0;
+
+    const tryNext = () => {
+      if (currentIndex >= pathsToTry.length) {
+        setError(true);
+        return;
+      }
+
+      const path = pathsToTry[currentIndex];
+      if (!path) {
+        currentIndex++;
+        tryNext();
+        return;
+      }
+      currentIndex++;
+
+      const img = new Image();
+      img.onload = () => {
+        setImageSrc(path);
+        setError(false);
+      };
+      img.onerror = tryNext;
+      img.src = path;
+    };
+
+    tryNext();
+  }, [slug, error, imageFile, title]);
+
+  if (imageSrc) {
+    return (
+      <img
+        src={imageSrc}
+        alt={title}
+        className="h-full w-full object-contain"
+      />
+    );
+  }
+
+  // Fallback to emoji
+  return <span className="text-center">{emoji}</span>;
+}
+
 const outfit = Outfit({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
 const features = [
@@ -21,6 +90,7 @@ const features = [
     icon: '📊',
     title: 'Product Analysis',
     subtitle: 'AI-Powered Computer Vision - Patent Pending',
+    imageFile: 'Product Analysis.png',
     bullets: [
       'Component Weight Breakdown',
       'Material Identification',
@@ -32,6 +102,7 @@ const features = [
     icon: '🌱',
     title: 'ISO 14040 / 14044 ',
     subtitle: 'Cradle-to-Grave CO₂ Analysis',
+    imageFile: 'ISO 14040 .PNG',
     bullets: [
       'Full Lifecycle Emissions',
       'Stage-by-Stage Breakdown',
@@ -42,6 +113,7 @@ const features = [
     icon: '🔬',
     title: 'Environmental Indicators',
     subtitle: 'IPCC AR6-Aligned Metrics',
+    imageFile: 'Environmental Indicators.png',
     bullets: [
       'Global Warming Potential',
       'Water & Land Use Impact',
@@ -52,6 +124,7 @@ const features = [
     icon: '🗺️',
     title: 'Supply-Chain Traceability',
     subtitle: 'Global Material Mapping',
+    imageFile: 'Supply-Chain Traceability.png',
     bullets: [
       'Origin & Transport Routes',
       'Supply Chain Risks',
@@ -62,6 +135,7 @@ const features = [
     icon: '📋',
     title: 'Decarbonisation Strategy',
     subtitle: 'Carbon Reduction Roadmap',
+    imageFile: 'Decarbonisation Strategy.png',
     bullets: [
       'CO₂ Savings Potential',
       'Actionable Solutions',
@@ -72,6 +146,7 @@ const features = [
     icon: '📈',
     title: 'Product Analysis History',
     subtitle: 'Track Progress Over Time',
+    imageFile: 'Product Analysis History.png',
     bullets: [
       'Trend Tracking',
       'Version Comparisons',
@@ -82,7 +157,19 @@ const features = [
     icon: '📚',
     title: 'References & Regulatory Library',
     subtitle: 'Built on Trusted Standards',
+    imageFile: 'References & Regulatory Library.png',
     bullets: ['50+ Databases & Global Standards'],
+  },
+  {
+    icon: '♻️',
+    title: 'Circularity (ISO 59020)',
+    subtitle: 'Circular Economy Metrics',
+    imageFile: 'Circularity and ISO 59020 concept.png',
+    bullets: [
+      'Circularity Analysis & Scorecard',
+      'Materiality Circularity Indicator',
+      'Linear Flow Index',
+    ],
   },
 ];
 
@@ -201,9 +288,16 @@ export function FeaturesSection() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h3 className="text-2xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3rem]">
+          <h3 className="text-2xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-3xl md:text-3xl lg:text-4xl xl:text-[2.4rem]">
             Everything You Need to Measure, Report, and Reduce
           </h3>
+        </div>
+
+        {/* Active feature title above the cards (matches section style) */}
+        <div className="mx-auto mb-8 max-w-4xl text-center">
+          <h4 className="text-xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-2xl md:text-2xl lg:text-3xl">
+            {features[activeIndex]?.title}
+          </h4>
         </div>
 
         <div className="relative flex min-h-[min(70vh,36rem)] items-center justify-center touch-none select-none">
@@ -385,7 +479,7 @@ function FeatureCardContent({
             : 'flex h-14 w-14 text-2xl sm:h-16 sm:w-16 sm:text-3xl'
         }`}
       >
-        {feature.icon}
+        <FeatureIcon emoji={feature.icon} title={feature.title} imageFile={feature.imageFile} />
       </div>
       <h3
         className={`mb-2 font-light tracking-[-0.02em] text-foreground ${

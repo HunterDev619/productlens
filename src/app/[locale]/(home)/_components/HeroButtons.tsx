@@ -34,7 +34,7 @@ export function HeroButtons() {
           asChild
         >
           <Link href="/auth/login">
-            Analyse Your Product
+            Link to Contact Us
             <ArrowSquareOut
               size={20}
               weight="bold"
