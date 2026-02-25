@@ -11,17 +11,17 @@ export function ProblemSection() {
           {/* Left - content */}
           <div className="flex-1 space-y-6 max-w-xl">
             <h2 className="text-2xl font-semibold tracking-[-0.03em] leading-[1.2] text-foreground sm:text-3xl md:text-[2.25rem]">
-              LCA Compliance Used to Take Months. Now It Takes Minutes.
+             Developing Sustainability Intelligence and Decarbonisation Pathways
+
             </h2>
             <p className="text-base font-normal leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-lg">
-              Traditional lifecycle assessments are expensive, slow, and require specialised
-              consultants. Regulatory pressure is increasing — the EU, UK, and major procurement
-              bodies now demand documented environmental disclosures. ProductLens removes the
-              bottleneck.
+              Product compliance reporting is a slow, costly, and consultant-heavy process, just as global regulatory pressure and customers’ expectations continue to rise. 
+            <br></br><br></br>
+              ProductLens disrupts by accelerating affordable compliance and sustainability intelligence from months to minutes.
             </p>
-            <p className="text-base font-semibold tracking-[0.02em] text-foreground sm:text-lg">
+            {/* <p className="text-base font-semibold tracking-[0.02em] text-foreground sm:text-lg">
               Upload a photo. Get a full, audit-ready analysis.
-            </p>
+            </p> */}
           </div>
 
           {/* Right - image at real size */}

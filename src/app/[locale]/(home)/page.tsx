@@ -66,10 +66,10 @@ export default async function Home() {
             {/* Hero Content - buttons first */}
             <div className="z-10 flex-1 text-center lg:text-left">
               <h1 className="mb-4 text-2xl font-bold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
-                Turn Any Product Into an ISO-Compliant Sustainability Report — In Minutes.
+                Transform Your Product Images into Compliance - In Minutes
               </h1>
               <p className="mx-auto mb-6 max-w-2xl text-base leading-relaxed text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] sm:mb-8 sm:text-lg md:text-xl lg:mx-0 lg:text-2xl">
-                ProductLens.ai uses AI-powered computer vision to transform product images into lifecycle carbon assessment, environmental impact analysis, supply-chain mapping, with quantifiable decarbonisation strategies aligned based on ISO standards and IPCC frameworks (patent pending).
+                Generate sustainability intelligence reports and decarbonisation strategies with 3 simple steps
               </p>
               <HeroButtons />
             </div>
