@@ -19,7 +19,7 @@ const outfit = Outfit({ subsets: ['latin'], weight: ['300', '400', '500', '600']
 const features = [
   {
     icon: '📊',
-    title: 'AI Product Analysis',
+    title: 'Product Analysis',
     subtitle: 'AI-Powered Computer Vision - Patent Pending',
     bullets: [
       'Component Weight Breakdown',
@@ -30,7 +30,7 @@ const features = [
   },
   {
     icon: '🌱',
-    title: 'Lifecycle Assessment (LCA)',
+    title: 'ISO 14040 / 14044 ',
     subtitle: 'Cradle-to-Grave CO₂ Analysis',
     bullets: [
       'Full Lifecycle Emissions',
@@ -201,9 +201,9 @@ export function FeaturesSection() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h2 className="text-2xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3rem]">
+          <h3 className="text-2xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3rem]">
             Everything You Need to Measure, Report, and Reduce
-          </h2>
+          </h3>
         </div>
 
         <div className="relative flex min-h-[min(70vh,36rem)] items-center justify-center touch-none select-none">

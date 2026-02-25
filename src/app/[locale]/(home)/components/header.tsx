@@ -79,14 +79,14 @@ const howItWorksItems = [
 const featuresItems = [
   {
     icon: '📊',
-    title: 'AI Product Analysis',
+    title: 'Product Analysis',
     subtitle: 'Component breakdown, material identification, carbon emission factors from Ecoinvent v3.9.',
     href: '/#features-ai-product-analysis',
     highlighted: false,
   },
   {
     icon: '🌱',
-    title: 'Lifecycle Assessment (LCA)',
+    title: 'ISO 14040 / 14044 ',
     subtitle: 'Cradle-to-grave CO₂e analysis. ISO 14040/14044 and IPCC AR6 aligned.',
     href: '/#features-lifecycle-assessment-lca',
     highlighted: false,
@@ -312,7 +312,7 @@ const mobileNavSections = [
     items: platformItems 
   },
   { 
-    label: 'How it works', 
+    label: 'Technology', 
     value: 'how-it-works',
     items: howItWorksItems 
   },
@@ -419,7 +419,7 @@ export const Header = () => {
                   onClick={() => setMobileOpen(false)}
                   className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 mt-1"
                 >
-                  Contact
+                  Contact Us
                 </Link>
               </nav>
             </SheetContent>

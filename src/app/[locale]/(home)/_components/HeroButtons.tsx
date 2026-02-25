@@ -18,7 +18,7 @@ export function HeroButtons() {
           asChild
         >
           <Link href="#how-it-works">
-            See How It Works
+            Link to Technology
             <ArrowSquareOut
               size={20}
               weight="bold"

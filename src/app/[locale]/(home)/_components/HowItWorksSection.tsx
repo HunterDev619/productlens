@@ -12,13 +12,13 @@ const steps = [
     id: 'upload',
     title: 'Upload',
     description:
-      'Simply drag and drop a product image (JPG, JPEG, or PNG). No technical data sheets required. Our computer vision engine does the rest.',
+      'Simply drag and drop a product image (JPG, JPEG, or PNG). No technical data sheets required.',
   },
   {
     id: 'analyse',
     title: 'Analyse',
     description:
-      'ProductLens identifies materials, components, and weight distribution using patent-pending AI vision analysis. It cross-references trusted open-source environmental databases globally to generate accurate carbon emission factors.',
+      'With patent-pending AI vision analysis, ProductLens decodes product images into its full technical and sustainability profile, including specifications, material breakdown, carbon emissions, environmental impact, circularity potential with supply-chain mapping',
   },
   {
     id: 'report',
@@ -183,7 +183,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-4xl text-center">
           <h2 className="text-2xl leading-tight font-semibold tracking-[-0.02em] text-foreground sm:text-3xl md:text-4xl lg:text-[2.5rem]">
-            Three Steps to a Complete Sustainability Report
+            Towards Product Compliance & Decarbonisation
           </h2>
         </div>
 
