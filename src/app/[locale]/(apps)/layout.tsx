@@ -57,16 +57,9 @@ export default function AppsLayout({ children }: { children: React.ReactNode }) 
         <main className="mx-4 min-h-screen md:my-4 lg:mx-8 lg:my-4 lg:pl-[320px]">
           {children}
         </main>
-        <footer className="bg-background py-4 text-center text-base text-foreground md:my-4 lg:mx-8 lg:my-4 lg:pl-[320px]">
-          ProductLens.ai — AI-powered product sustainability intelligence. From image to insight.
-          ________________________________________
-          © 2025 ProductLens.ai. All rights reserved. Patent pending.
-        </footer>
-        // This is the footer
-
         {/* Go to Top Button */}
         <GoToTopButton threshold={300} />
       </div>
     </AuthGuard>
   );
-};
+}

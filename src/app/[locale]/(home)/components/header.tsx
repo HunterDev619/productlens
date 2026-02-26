@@ -21,106 +21,6 @@ import { motion } from 'framer-motion';
 import { Link } from '@/libs/I18nNavigation';
 import { CaretDown, ArrowSquareOut, List } from '@phosphor-icons/react';
 
-const platformItems = [
-  {
-    icon: '⏱️',
-    title: 'LCA Compliance',
-    subtitle: 'LCA Compliance Used to Take Months. Now It Takes Minutes. Traditional lifecycle assessments are expensive, slow, and require specialised consultants.',
-    href: '#problem',
-    highlighted: true,
-  },
-  {
-    icon: '📊',
-    title: 'Product Analysis',
-    subtitle: 'Transform product images into lifecycle carbon assessment with AI-powered computer vision.',
-    href: '/apps/analysis',
-    highlighted: false,
-  },
-  {
-    icon: '🌍',
-    title: 'Supply Chain Mapping',
-    subtitle: 'Visualise full supply chain pathways and environmental risks on an interactive map.',
-    href: '#features',
-    highlighted: false,
-  },
-  {
-    icon: '📋',
-    title: 'Compliance Reports',
-    subtitle: 'Generate audit-ready documentation for ISO, CSRD, and procurement requirements.',
-    href: '#features',
-    highlighted: false,
-  },
-];
-
-const howItWorksItems = [
-  {
-    icon: '📤',
-    title: 'Upload',
-    subtitle: 'Drag and drop a product image (JPG, PNG). No technical data sheets or BOM required.',
-    href: '/#how-it-works-upload',
-    highlighted: false,
-  },
-  {
-    icon: '🔬',
-    title: 'Analyse',
-    subtitle: 'AI identifies materials, components, and weight distribution. Cross-references environmental databases.',
-    href: '/#how-it-works-analyse',
-    highlighted: false,
-  },
-  {
-    icon: '📄',
-    title: 'Report',
-    subtitle: 'Receive ISO & IPCC-compliant report with lifecycle emissions, decarbonisation priorities, and regulatory indicators.',
-    href: '/#how-it-works-report',
-    highlighted: false,
-  },
-];
-
-const featuresItems = [
-  {
-    icon: '📊',
-    title: 'Product Analysis',
-    subtitle: 'Component breakdown, material identification, carbon emission factors from Ecoinvent v3.9.',
-    href: '/#features-ai-product-analysis',
-    highlighted: false,
-  },
-  {
-    icon: '🌱',
-    title: 'ISO 14040 / 14044 ',
-    subtitle: 'Cradle-to-grave CO₂e analysis. ISO 14040/14044 and IPCC AR6 aligned.',
-    href: '/#features-lifecycle-assessment-lca',
-    highlighted: false,
-  },
-  {
-    icon: '🔬',
-    title: 'Environmental Indicators',
-    subtitle: 'GWP100, water consumption, land use, biodiversity impact.',
-    href: '/#features-environmental-indicators',
-    highlighted: false,
-  },
-  {
-    icon: '🗺️',
-    title: 'Supply-Chain Traceability',
-    subtitle: 'Geographic mapping, transport emissions, CBAM-ready reporting.',
-    href: '/#features-supply-chain-traceability',
-    highlighted: false,
-  },
-  {
-    icon: '📉',
-    title: 'Decarbonisation Strategy',
-    subtitle: 'Prioritised roadmap with CO₂e savings potential and implementation feasibility.',
-    href: '/#features-decarbonisation-strategy',
-    highlighted: false,
-  },
-  {
-    icon: '📚',
-    title: 'References & Regulatory Library',
-    subtitle: 'Built on Trusted Standards. More than 50 databases linked with ProductLens.ai firmly grounded in globally recognised databases and regulatory frameworks.',
-    href: '/#features-references-regulatory-library',
-    highlighted: false,
-  },
-];
-
 const solutionItems = [
   {
     icon: '✏️',
@@ -182,10 +82,10 @@ function NavDropdown({
       <DropdownMenuTrigger asChild>
         <motion.button
           type="button"
-          className="header-nav-text group flex items-center gap-2 text-sm font-medium tracking-wide text-gray-700 leading-6 transition-colors duration-200 hover:text-emerald-600 focus:outline-none focus-visible:outline-none"
-          whileHover={{ scale: 1.02, y: -1 }}
-          whileTap={{ scale: 0.99, y: 0 }}
-          transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+          className="header-nav-text group flex items-center gap-2 text-base font-semibold tracking-wide text-black leading-7 transition-colors duration-200 hover:text-emerald-600 focus:outline-none focus-visible:outline-none"
+          whileHover={{ scale: 1.06, y: -2 }}
+          whileTap={{ scale: 0.96 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 22 }}
         >
           {label}
           <motion.span
@@ -238,7 +138,6 @@ function NavDropdown({
               >
                 <div className="flex-1">
                   <p className="text-lg font-medium text-gray-800 transition-colors duration-200">{item.title}</p>
-                  <p className={`mt-2 text-sm leading-6 text-gray-600 transition-colors duration-200 ${hoveredIndex === index ? 'text-gray-700' : 'text-gray-600'}`}>{item.subtitle}</p>
                 </div>
                 <div className="mt-4 flex items-center gap-2">
                   <motion.span
@@ -282,13 +181,14 @@ const scrollToSection = (href: string, onClose: () => void) => {
     cleanHash = `#${href}`; // Add # if missing: features -> #features
   }
   
-  // Update URL hash without navigating
-  window.history.pushState(null, '', cleanHash);
-  
+  // Update URL hash without navigating (preserve pathname for locale)
+  const newUrl = window.location.pathname + cleanHash;
+  window.history.pushState(null, '', newUrl);
+
   // Find the target element
   const targetId = cleanHash.slice(1); // Remove the #: #features -> features
   const element = document.getElementById(targetId);
-  
+
   if (element) {
     const viewport = document.querySelector('[data-scroll-viewport]');
     if (viewport instanceof HTMLElement) {
@@ -307,11 +207,11 @@ const scrollToSection = (href: string, onClose: () => void) => {
 };
 
 const mobileNavSections = [
-  { label: 'Solution', value: 'solution', items: solutionItems },
-  { label: 'Technology', value: 'technology', items: platformItems },
-  { label: 'Pricing', value: 'pricing', items: [] },
+  { label: 'Solution', value: 'solution', href: '/#how-it-works', items: [] },
+  { label: 'Technology', value: 'technology', href: '/#technology', items: [] },
+  { label: 'Pricing', value: 'pricing', href: '/#pricing', items: [] },
   { label: 'Use Case', value: 'usecase', items: solutionItems },
-  { label: 'FAQ', value: 'faq', items: [] },
+  { label: 'FAQ', value: 'faq', href: '/#faq', items: [] },
 ];
 
 export const Header = () => {
@@ -332,39 +232,64 @@ export const Header = () => {
 
         {/* Navigation - center (desktop) */}
         <nav className="hidden flex-1 items-center justify-center gap-6 xl:gap-8 lg:flex">
-          <NavDropdown label="Solution" items={solutionItems} gridCols={2} useAnchor />
-          <NavDropdown label="Technology" items={platformItems} gridCols={2} />
-          <Link href="/pricing">
+          <Link href="/#how-it-works">
             <motion.span
-              className="block text-sm font-medium tracking-wide text-gray-700 hover:text-emerald-600 leading-6"
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.99 }}
-              transition={{ duration: 0.14 }}
+              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              whileHover={{ scale: 1.06, y: -2 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+            >
+              Solution
+            </motion.span>
+          </Link>
+          <Link href="/#technology">
+            <motion.span
+              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              whileHover={{ scale: 1.06, y: -2 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+            >
+              Technology
+            </motion.span>
+          </Link>
+          <Link href="/#pricing">
+            <motion.span
+              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              whileHover={{ scale: 1.06, y: -2 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
             >
               Pricing
             </motion.span>
           </Link>
           <NavDropdown label="Use Case" items={solutionItems} gridCols={2} useAnchor />
-          <Link href="/faq">
+          <Link href="/#faq">
             <motion.span
-              className="block text-sm font-medium tracking-wide text-gray-700 hover:text-emerald-600 leading-6"
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.99 }}
-              transition={{ duration: 0.14 }}
+              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              whileHover={{ scale: 1.06, y: -2 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
             >
               FAQ
             </motion.span>
           </Link>
-          <Link href="/#contact">
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('/#contact', () => {});
+            }}
+            className="cursor-pointer"
+          >
             <motion.span
-              className="block text-sm font-medium tracking-wide text-gray-700 hover:text-emerald-600 leading-6"
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.99 }}
-              transition={{ duration: 0.14 }}
+              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              whileHover={{ scale: 1.06, y: -2 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
             >
               Contact US
             </motion.span>
-          </Link>
+          </a>
         </nav>
 
         {/* Mobile menu button */}
@@ -393,35 +318,50 @@ export const Header = () => {
               <SheetTitle className="sr-only">Navigation menu</SheetTitle>
               <nav className="mt-8 flex flex-col">
                 <Accordion type="single" collapsible className="w-full">
-                  {mobileNavSections.map((section) => (
-                    <AccordionItem key={section.value} value={section.value} className="border-b border-gray-200">
-                      <AccordionTrigger className="px-4 py-3 text-base font-medium text-gray-800 hover:no-underline hover:bg-emerald-50 [&[data-state=open]]:bg-emerald-50">
-                        {section.label}
-                      </AccordionTrigger>
-                      <AccordionContent className="px-4 pb-2">
-                        <div className="flex flex-col gap-1">
-                          {section.items.map((item) => (
-                            <button
-                              key={item.title}
-                              type="button"
-                              onClick={() => scrollToSection(item.href, () => setMobileOpen(false))}
-                              className="text-left rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-emerald-100 hover:text-gray-900 transition-colors"
-                            >
-                              {item.title}
-                            </button>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
+                  {mobileNavSections.map((section) => {
+                    const directHref = 'href' in section ? (section as { href?: string }).href : undefined;
+                    if (directHref && section.items.length === 0) {
+                      return (
+                        <button
+                          key={section.value}
+                          type="button"
+                          onClick={() => scrollToSection(directHref, () => setMobileOpen(false))}
+                          className="flex w-full items-center justify-between border-b border-gray-200 px-4 py-3 text-base font-medium text-gray-800 hover:bg-emerald-50"
+                        >
+                          {section.label}
+                        </button>
+                      );
+                    }
+                    return (
+                      <AccordionItem key={section.value} value={section.value} className="border-b border-gray-200">
+                        <AccordionTrigger className="px-4 py-3 text-base font-medium text-gray-800 hover:no-underline hover:bg-emerald-50 [&[data-state=open]]:bg-emerald-50">
+                          {section.label}
+                        </AccordionTrigger>
+                        <AccordionContent className="px-4 pb-2">
+                          <div className="flex flex-col gap-1">
+                            {section.items.map((item) => (
+                              <button
+                                key={item.title}
+                                type="button"
+                                onClick={() => scrollToSection(item.href, () => setMobileOpen(false))}
+                                className="text-left rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-emerald-100 hover:text-gray-900 transition-colors"
+                              >
+                                {item.title}
+                              </button>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
                 </Accordion>
-                <Link
-                  href="/#contact"
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 mt-1"
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('/#contact', () => setMobileOpen(false))}
+                  className="block w-full text-left rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 mt-1"
                 >
                   Contact US
-                </Link>
+                </button>
               </nav>
             </SheetContent>
           </Sheet>

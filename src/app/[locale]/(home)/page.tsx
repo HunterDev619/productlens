@@ -3,7 +3,10 @@ import { generateMetadata as generateSEOMetadata } from '@/utils/seo';
 import { FeaturesSection } from './_components/FeaturesSection';
 import { HowItWorksSection } from './_components/HowItWorksSection';
 import { MetricsSection } from './_components/MetricsSection';
+import { FaqSection } from './_components/FaqSection';
+import { PricingSection } from './_components/PricingSection';
 import { UseCasesSection } from './_components/UseCasesSection';
+import { TechnologySection } from './_components/TechnologySection';
 import { getAnalyseImages } from './_lib/getAnalyseImages';
 import { getFlowImages } from './_lib/getFlowImages';
 import { VideoBackground } from './_components/VideoBackground';
@@ -12,6 +15,7 @@ import { HeroButtons } from './_components/HeroButtons';
 import { ProblemSection } from './_components/ProblemSection';
 import RedirectResetPassword from './_components/redirect-reset-password';
 import { Header } from './components/header';
+import { Footer } from './_components/Footer';
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Product Lens - AI Product Intelligence & Sustainability Platform',
@@ -95,56 +99,163 @@ export default async function Home() {
       {/* Use Cases Section */}
       <UseCasesSection />
 
+      {/* Technology Section */}
+      <TechnologySection />
+
+      {/* Pricing Section */}
+      <PricingSection />
+
+      {/* FAQ Section */}
+      <FaqSection />
+
       {/* Contact Section */}
       <section id="contact" className="bg-gradient-to-br from-emerald-50 to-emerald-100/80 py-16 text-foreground sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mb-12 max-w-2xl text-center">
-            <h2 className="mb-4 text-heading-xl font-bold text-foreground">
-              Get In Touch
-            </h2>
-            <p className="mx-auto max-w-xl text-body-lg text-muted-foreground">
-              Have questions or want to schedule a demo? Our team is here to help you get started with Product Lens.
-            </p>
-          </div>
+          <div className="grid gap-10 md:grid-cols-2 md:items-start">
+            {/* Left: CTA buttons + extra WhatsApp link (first & third images) */}
+            <div className="flex flex-col items-stretch gap-4 max-w-sm md:self-center">
+              <div className="mb-2">
+                <h2 className="mb-2 text-3xl font-bold text-foreground sm:text-4xl">
+                  Get In Touch
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Fill out the form or reach us directly via WhatsApp and we’ll get back to you very soon.
+                </p>
+              </div>
 
-          <div className="flex flex-col flex-wrap items-center justify-center gap-12 sm:flex-row">
-            <div className="flex flex-col items-center gap-2">
-              <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-[#0066ff] to-[#00d4aa] text-2xl">
-                📧
-              </div>
-              <strong className="text-heading">Email</strong>
-              <a href="mailto:info@productlens.ai" className="text-[#00d4aa] hover:underline">
-                contact@eco-solutise.com
+              <a
+                href="mailto:contact@eco-solutise.com?subject=Book%20a%20demo%20with%20ProductLens"
+                className="inline-flex items-center justify-center rounded-lg bg-[#065f46] px-6 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#064e3b]"
+              >
+                Book A Demo
+              </a>
+
+              <a
+                href="https://wa.me/6590289450"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 rounded-lg border border-[#16a34a] bg-white px-6 py-3 text-sm font-semibold text-[#16a34a] shadow-sm transition-colors hover:bg-[#ecfdf3]"
+              >
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#25D366] text-base text-white">
+                  W
+                </span>
+                <span>WhatsApp</span>
+              </a>
+
+              {/* Extra contact link (third image position) */}
+              <a
+                href="mailto:productlens.ai@eco-solutise.com"
+                className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-900"
+              >
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-[11px] text-white">
+                  @
+                </span>
+                <span>productlens.ai@eco-solutise.com</span>
               </a>
             </div>
-            <div className="flex flex-col items-center gap-2">
-              <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-2xl text-white">
-                📞
-              </div>
-              <strong className="text-heading">Phone</strong>
-              <a href="tel:+6512345678" className="text-emerald-700 hover:text-emerald-600/90 hover:underline">
-                +65 9028 9450
-              </a>
+
+            {/* Right: Contact form (second image) */}
+            <div className="w-full rounded-2xl border border-emerald-700/40 bg-white p-6 shadow-sm sm:p-8">
+              <h3 className="mb-6 text-xl font-semibold text-gray-900 sm:text-2xl">
+                Fill out the form below and we will be in touch soon.
+              </h3>
+              <form className="space-y-4">
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Name<span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Work E-mail<span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your work email address"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                  />
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Company<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="company"
+                      placeholder="Enter your company name"
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Country<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="country"
+                      placeholder="Select your country"
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    What brings you to us today?<span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="reason"
+                    className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Choose what you’re looking for?
+                    </option>
+                    <option value="demo">Book a product demo</option>
+                    <option value="pricing">Ask about pricing</option>
+                    <option value="partnership">Discuss partnership</option>
+                    <option value="support">Get product support</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Message
+                  </label>
+                  <textarea
+                    name="message"
+                    rows={4}
+                    placeholder="Any additional details"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                  />
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#065f46] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#064e3b]"
+                  >
+                    <span>Submit</span>
+                    <span aria-hidden>↗</span>
+                  </button>
+                </div>
+              </form>
             </div>
-            {/* <div className="flex flex-col items-center gap-2">
-              <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-[#0066ff] to-[#00d4aa] text-2xl">
-                💬
-              </div>
-              <strong className="text-lg">Live Chat</strong>
-              <span className="text-[#00d4aa]">Available 9 AM - 6 PM SGT</span>
-            </div> */}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      {/* <footer className="bg-black py-8 text-center text-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <p className="text-sm">
-            &copy; 2025 Product Lens. All rights reserved. | ISO 14040 Compliant | IPCC AR6 Aligned
-          </p>
-        </div>
-      </footer> */}
+      <Footer />
     </div>
   );
 }

@@ -8,13 +8,13 @@ export function ProblemSection() {
     <section id="problem" className={`bg-slate-50/80 py-12 sm:py-16 ${outfit.className}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
-          {/* Left - content */}
-          <div className="flex-1 space-y-6 max-w-xl">
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] leading-[1.2] text-foreground sm:text-3xl md:text-[2.25rem]">
+          {/* Left - content (middle part) */}
+          <div className="flex-1 space-y-6 max-w-2xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.03em] leading-[1.2] text-foreground sm:text-4xl md:text-[2.75rem]">
              Developing Sustainability Intelligence and Decarbonisation Pathways
 
             </h2>
-            <p className="text-base font-normal leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-lg">
+            <p className="text-lg font-normal leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-xl">
               Product compliance reporting is a slow, costly, and consultant-heavy process, just as global regulatory pressure and customers’ expectations continue to rise. 
             <br></br><br></br>
               ProductLens disrupts by accelerating affordable compliance and sustainability intelligence from months to minutes.

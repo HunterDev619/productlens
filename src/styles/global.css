@@ -568,6 +568,14 @@ main,
   paint-order: stroke fill;
 }
 
+/* Header logo: image larger (not letter) */
+.header-logo img {
+  width: 52px !important;
+  height: 52px !important;
+  max-width: 52px !important;
+  min-width: 52px !important;
+}
+
 /* Nav dropdown: no focus/highlight styling - hover only */
 [data-nav-dropdown] [data-highlighted],
 [data-nav-dropdown] [data-highlighted]:focus,
