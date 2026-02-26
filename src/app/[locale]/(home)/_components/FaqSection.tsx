@@ -50,7 +50,7 @@ export function FaqSection() {
     >
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <motion.h2
-          className="mb-8 text-center text-2xl font-bold tracking-tight text-black sm:text-4xl"
+          className="mb-8 text-center text-4xl font-bold tracking-tight text-black sm:text-4xl"
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.4 }}
@@ -71,7 +71,7 @@ export function FaqSection() {
               className="overflow-hidden rounded-lg border border-[#E0E0E0] bg-white shadow-[0_2px_5px_rgba(0,0,0,0.05)]"
             >
               <AccordionPrimitive.Header>
-                <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 px-4 py-3.5 text-left text-[1.05rem] font-semibold leading-snug text-black outline-none transition-colors hover:bg-gray-50/80 focus-visible:ring-2 focus-visible:ring-[#007bff]/30 data-[state=open]:bg-gray-50/50">
+                <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 px-4 py-3.5 text-left text-lg sm:text-xl font-semibold leading-snug text-black outline-none transition-colors hover:bg-gray-50/80 focus-visible:ring-2 focus-visible:ring-[#007bff]/30 data-[state=open]:bg-gray-50/50">
                   <span className="pr-2">{item.question}</span>
                   <span className="flex shrink-0 text-[#007bff]">
                     <Plus
@@ -90,7 +90,7 @@ export function FaqSection() {
                 </AccordionPrimitive.Trigger>
               </AccordionPrimitive.Header>
               <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                <p className="border-t border-[#E8E8E8] px-4 py-3 text-[1rem] font-normal leading-relaxed text-black">
+                <p className="border-t border-[#E8E8E8] px-4 py-3 text-base sm:text-lg font-normal leading-relaxed text-black">
                   {item.answer}
                 </p>
               </AccordionPrimitive.Content>
