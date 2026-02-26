@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Outfit } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
@@ -9,6 +10,11 @@ import { routing } from '@/libs/I18nRouting';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { organizationStructuredData, softwareApplicationStructuredData, websiteStructuredData } from '@/utils/seo';
 import '@/styles/global.css';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -138,7 +144,7 @@ export default async function RootLayout(props: {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationStructuredData) }}
         />
       </head>
-      <body className="overflow-x-hidden font-sans bg-background text-foreground antialiased print:m-0 print:bg-white">
+      <body className={`overflow-x-hidden bg-background text-foreground antialiased print:m-0 print:bg-white ${outfit.className}`}>
         <div className="flex min-h-screen min-w-0 flex-col">
           <NextIntlClientProvider>
             <QueryProvider>

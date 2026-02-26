@@ -497,7 +497,7 @@ function FeatureCardContent({
       >
         {feature.subtitle}
       </p>
-      <ul className="mt-auto space-y-2 sm:space-y-3">
+      <ul className={`space-y-2 sm:space-y-3 ${feature.bullets.length === 1 ? 'mt-4' : 'mt-auto'}`}>
         {feature.bullets.map((bullet) => (
           <li
             key={bullet}
