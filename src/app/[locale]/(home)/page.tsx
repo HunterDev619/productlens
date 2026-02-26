@@ -165,6 +165,7 @@ export default async function Home() {
                     Name<span className="text-red-500">*</span>
                   </label>
                   <input
+                  
                     type="text"
                     name="name"
                     placeholder="Enter your name"
