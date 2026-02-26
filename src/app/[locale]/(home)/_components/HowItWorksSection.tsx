@@ -1,11 +1,8 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Outfit } from 'next/font/google';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
-
-const outfit = Outfit({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
 const steps = [
   {
@@ -179,7 +176,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
   const currentStep = steps[activeIndex];
 
   return (
-    <section id="how-it-works" className={`scroll-mt-24 bg-slate-50/80 py-20 sm:py-24 ${outfit.className}`}>
+    <section id="how-it-works" className="scroll-mt-24 bg-slate-50/80 py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-4xl text-center">
           <h2 className="text-2xl leading-tight font-semibold tracking-[-0.02em] text-foreground sm:text-3xl md:text-4xl lg:text-[2.5rem]">

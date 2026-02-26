@@ -1,11 +1,8 @@
 import Image from 'next/image';
-import { Outfit } from 'next/font/google';
-
-const outfit = Outfit({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
 export function ProblemSection() {
   return (
-    <section id="problem" className={`bg-slate-50/80 py-12 sm:py-16 ${outfit.className}`}>
+    <section id="problem" className="bg-slate-50/80 py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
           {/* Left - content (middle part) */}

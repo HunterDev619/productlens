@@ -121,10 +121,10 @@
   --radius-md: calc(var(--radius-lg) - 2px);
   --radius-sm: calc(var(--radius-lg) - 4px);
 
-  /* Font Family */
+  /* Font Family - match reference style */
   --font-sans:
-    'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+    'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   /* Smooth transitions - consistent across entire system */
   --ease-smooth: cubic-bezier(0.32, 0.72, 0, 1);
@@ -166,7 +166,7 @@
     overflow-x: hidden;
     background-color: theme(colors.background);
     color: theme(colors.foreground);
-    font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 1rem;
     line-height: 1.6;
     letter-spacing: 0.01em;

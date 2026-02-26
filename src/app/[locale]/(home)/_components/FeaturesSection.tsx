@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
-import { Outfit } from 'next/font/google';
 
 function titleToSlug(title: string): string {
   return title
@@ -82,8 +81,6 @@ function FeatureIcon({ emoji, title, imageFile }: { emoji: string; title: string
   // Fallback to emoji
   return <span className="text-center">{emoji}</span>;
 }
-
-const outfit = Outfit({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
 const features = [
   {
@@ -284,7 +281,7 @@ export function FeaturesSection() {
   return (
     <section
       id="features"
-      className={`relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24 ${outfit.className}`}
+      className="relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-4xl text-center">
