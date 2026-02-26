@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
-import { Outfit } from 'next/font/google';
 
 function titleToSlug(title: string): string {
   return title
@@ -15,8 +14,6 @@ function titleToSlug(title: string): string {
     .replace(/–/g, '-')
     .replace(/,/g, '');
 }
-
-const outfit = Outfit({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 const USECASE_IMAGE_FILES = [
   'Product Designers & Engineers.png',
@@ -139,7 +136,7 @@ export function UseCasesSection() {
   return (
     <section
       id="use-cases"
-      className={`relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24 ${outfit.className}`}
+      className="relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-4xl text-center">

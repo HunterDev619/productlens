@@ -3,9 +3,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CaretDown } from '@phosphor-icons/react';
-import { Outfit } from 'next/font/google';
-
-const outfit = Outfit({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 const TECHNOLOGY_ITEMS = [
   {
@@ -52,7 +49,7 @@ export function TechnologySection() {
   return (
     <section
       id="technology"
-      className={`relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24 ${outfit.className}`}
+      className="relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-4xl text-center">
