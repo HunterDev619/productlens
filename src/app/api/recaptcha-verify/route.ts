@@ -32,6 +32,7 @@ export async function POST(request: Request) {
       );
     }
 
+    // recaptcha verified
     return NextResponse.json({ success: true });
   } catch (e) {
     return NextResponse.json(
