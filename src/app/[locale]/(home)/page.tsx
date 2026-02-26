@@ -180,7 +180,7 @@ export default async function Home() {
                   <input
                     type="email"
                     name="email"
-                    placeholder="for example: telegram: @mecury19, or vudinhgiang2914@gmail.com)"
+                    placeholder="this is my telegram: @mecury19, or vudinhgiang2914@gmail.com)"
                     className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
                   />
                 </div>
