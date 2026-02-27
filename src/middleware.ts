@@ -40,6 +40,7 @@ export default async function middleware(
   }
   */
 
+  
   return handleI18nRouting(request);
 }
 
