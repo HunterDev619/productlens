@@ -61,5 +61,9 @@ build-archive.log
 /test-results/
 /playwright-report/
 /playwright/.cache/
+<<<<<<< HEAD
+.local
+=======
 .env*.local
 
+>>>>>>> d6caddb5d6c40c1d2c0a7100150f39a3759a61fe
