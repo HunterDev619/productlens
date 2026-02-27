@@ -33,17 +33,19 @@ export async function POST(request: Request) {
   }
 
   // Form data available: name, email, company, country, reason, message
-  const name = formData.get('name');
-  const email = formData.get('email');
-  const company = formData.get('company');
-  const country = formData.get('country');
-  const reason = formData.get('reason');
-  const message = formData.get('message');
+  // const name = formData.get('name');
+  // const email = formData.get('email');
+  // const company = formData.get('company');
+  // const country = formData.get('country');
+  // const reason = formData.get('reason');
+  // const message = formData.get('message');
 
   // Extend here: send email, save to DB, etc.
   // For now, just acknowledge success
   return NextResponse.json({
     success: true,
     message: 'Thank you! We will be in touch soon.',
+
+    
   });
 }

@@ -39,8 +39,7 @@ export default async function middleware(
     }
   }
   */
-
-  
+// this is the middleware for the i18n routing
   return handleI18nRouting(request);
 }
 
