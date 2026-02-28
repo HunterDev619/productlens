@@ -234,7 +234,7 @@ export const Header = () => {
         <nav className="hidden flex-1 items-center justify-center gap-6 xl:gap-8 lg:flex">
           <Link href="/#how-it-works">
             <motion.span
-              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -244,7 +244,7 @@ export const Header = () => {
           </Link>
           <Link href="/#technology">
             <motion.span
-              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -254,7 +254,7 @@ export const Header = () => {
           </Link>
           <Link href="/#pricing">
             <motion.span
-              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -265,7 +265,7 @@ export const Header = () => {
           <NavDropdown label="Use Case" items={solutionItems} gridCols={2} useAnchor />
           <Link href="/#faq">
             <motion.span
-              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -282,7 +282,7 @@ export const Header = () => {
             className="cursor-pointer"
           >
             <motion.span
-              className="block text-base font-semibold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}

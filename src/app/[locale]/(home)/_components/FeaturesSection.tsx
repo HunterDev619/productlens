@@ -170,8 +170,10 @@ const features = [
   },
 ];
 
-const ANGLE = 30;
-const SPRING = { type: 'spring' as const, stiffness: 220, damping: 28 };
+const ANGLE = 60;
+const SPRING = { type: 'spring' as const, stiffness: 180, damping: 26 };
+const FLOW_EASE = [0.25, 0.46, 0.45, 0.94] as const; // Soft ease-out
+const FLOW_DURATION = 0.6;
 const DRAG_THRESHOLD = 60;
 
 export function FeaturesSection() {
@@ -250,8 +252,8 @@ export function FeaturesSection() {
   const handleDragEnd = useCallback(() => {
     if (!isDragging) return;
     const offset = dragOffsetRef.current;
-    if (offset > DRAG_THRESHOLD) goPrev();
-    else if (offset < -DRAG_THRESHOLD) goNext();
+    if (offset > DRAG_THRESHOLD) goNext();
+    else if (offset < -DRAG_THRESHOLD) goPrev();
     setDragOffset(0);
     setIsDragging(false);
   }, [isDragging, goPrev, goNext]);
@@ -281,59 +283,93 @@ export function FeaturesSection() {
   return (
     <section
       id="features"
-      className="relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24"
+      className="relative overflow-x-hidden overflow-y-visible bg-slate-100/80 py-10 sm:py-12 scroll-mt-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h3 className="text-2xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-3xl md:text-3xl lg:text-4xl xl:text-[2.4rem]">
+          <h3 className="text-2xl font-bold tracking-[-0.02em] leading-tight text-black sm:text-3xl md:text-3xl lg:text-4xl xl:text-[2.3rem]">
             Everything You Need to Measure, Report, and Reduce
           </h3>
         </div>
 
         {/* Active feature title above the cards (matches section style) */}
         <div className="mx-auto mb-8 max-w-4xl text-center">
-          <h4 className="text-xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-2xl md:text-2xl lg:text-3xl">
+          {/* <h4 className="text-xl font-semibold tracking-[-0.02em] leading-tight text-foreground sm:text-2xl md:text-2xl lg:text-3xl">
             {features[activeIndex]?.title}
-          </h4>
+          </h4> */}
         </div>
 
-        <div className="relative flex min-h-[min(70vh,36rem)] items-center justify-center touch-none select-none">
+        <div className="relative left-1/2 flex min-h-[min(80vh,44rem)] w-screen min-w-0 -translate-x-1/2 touch-none select-none items-center justify-center">
           <div
-            className="relative flex w-full max-w-6xl cursor-grab active:cursor-grabbing items-center justify-center"
-            style={{ perspective: 2000, transformStyle: 'preserve-3d' }}
+            className="relative flex w-full cursor-grab active:cursor-grabbing items-center justify-center"
+            style={{ perspective: 1500, transformStyle: 'preserve-3d' }}
             onMouseDown={(e) => handleDragStart(e.clientX)}
             onTouchStart={(e) => handleDragStart(e.touches[0]!.clientX)}
           >
             <div
-              className="relative flex w-full items-center justify-center gap-0"
+              className="relative flex w-full min-w-0 items-center justify-between gap-0"
               style={{
                 transform: `translateX(${dragOffset}px)`,
-                transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
+                transition: isDragging ? 'none' : 'transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 transformStyle: 'preserve-3d',
               }}
             >
-              {/* Left card - 30° angle (hidden on mobile) */}
+              {/* Left card - pushed further left, gap from center, flowing animation */}
               <motion.div
                 key={`left-${leftIndex}`}
-                className="absolute left-[2%] top-1/2 hidden w-[min(260px,22vw)] -translate-y-1/2 sm:left-[4%] sm:w-[min(280px,24vw)] lg:left-[6%] lg:block lg:w-[min(300px,26vw)]"
-                style={{
-                  zIndex: 1,
-                  transformOrigin: 'center center',
-                }}
+                className="hidden w-fit max-w-[26rem] shrink-0 lg:block"
+                style={{ zIndex: 1, transformOrigin: 'center center' }}
                 initial={false}
                 animate={{
+                  x: -(dragOffset > 0 ? Math.min(dragOffset * 0.3, 40) : 0) + (dragOffset < 0 ? Math.max(dragOffset * 0.3, -40) : 0),
                   opacity: 0.9,
-                  rotateY: -ANGLE,
-                  x: -20 - (dragOffset > 0 ? Math.min(dragOffset * 0.3, 40) : 0) + (dragOffset < 0 ? Math.max(dragOffset * 0.3, -40) : 0),
-                  scale: 0.88,
+                  rotateY: ANGLE,
+                  scale: 1,
                 }}
                 transition={SPRING}
               >
-                <FeatureCard feature={features[leftIndex]!} isCenter={false} />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`left-content-${leftIndex}`}
+                    className="relative w-full"
+                    initial={{ opacity: 0, x: direction === 1 ? 180 : -180 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{
+                      opacity: 0,
+                      x: direction === 1 ? -180 : 180,
+                      transition: { duration: FLOW_DURATION * 0.6, ease: FLOW_EASE },
+                    }}
+                    transition={{ duration: FLOW_DURATION, ease: FLOW_EASE }}
+                  >
+                    <FeatureCard feature={features[leftIndex]!} isCenter />
+                  </motion.div>
+                </AnimatePresence>
               </motion.div>
 
-              {/* Center card - main, larger - flow right-to-left animation */}
-              <div className="relative z-10 w-[min(320px,90vw)] shrink-0 overflow-visible sm:w-[min(380px,85vw)] md:w-[min(400px,50vw)] lg:w-[min(420px,38vw)]">
+              {/* Left button | Center card | Right button - edges align: center left = left btn right, center right = right btn left */}
+              <div className="relative z-10 mx-4 flex shrink-0 items-center gap-0 sm:mx-6 md:mx-8">
+                {/* Left arrow - center's left edge matches this button's right edge, hidden on mobile */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goNext();
+                  }}
+                  aria-label="Next feature"
+                  className="relative z-20 hidden shrink-0 lg:block"
+                >
+                  <motion.div
+                    className="flex size-12 items-center justify-center rounded-full border border-slate-300 bg-slate-100 shadow-lg backdrop-blur-sm transition-colors hover:border-slate-400/80 hover:bg-slate-200/80"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.92 }}
+                    transition={SPRING}
+                  >
+                    <CaretLeft size={24} weight="bold" className="text-foreground" />
+                  </motion.div>
+                </button>
+
+                {/* Center card - left edge touches left button's right, right edge touches right button's left */}
+                <div className="w-fit max-w-[26rem] shrink-0 overflow-visible">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`center-${centerIndex}`}
@@ -341,8 +377,8 @@ export function FeaturesSection() {
                     style={{ transformOrigin: 'center center' }}
                     initial={{
                       opacity: 0,
-                      x: direction === 1 ? 120 : -120,
-                      scale: 0.96,
+                      x: direction === 1 ? 200 : -200,
+                      scale: 0.97,
                     }}
                     animate={{
                       opacity: 1,
@@ -351,80 +387,74 @@ export function FeaturesSection() {
                     }}
                     exit={{
                       opacity: 0,
-                      x: direction === 1 ? -120 : 120,
-                      scale: 0.96,
-                      transition: { duration: 0.28, ease: [0.32, 0.72, 0, 1] },
+                      x: direction === 1 ? -200 : 200,
+                      scale: 0.97,
+                      transition: { duration: FLOW_DURATION * 0.65, ease: FLOW_EASE },
                     }}
                     transition={{
-                      ...SPRING,
-                      opacity: { duration: 0.3 },
+                      duration: FLOW_DURATION,
+                      ease: FLOW_EASE,
+                      opacity: { duration: FLOW_DURATION * 0.7 },
                     }}
                   >
                     <FeatureCard feature={features[centerIndex]!} isCenter />
                   </motion.div>
                 </AnimatePresence>
+                </div>
+
+                {/* Right arrow - center's right edge matches this button's left edge, hidden on mobile */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goPrev();
+                  }}
+                  aria-label="Previous feature"
+                  className="relative z-20 hidden shrink-0 lg:block"
+                >
+                  <motion.div
+                    className="flex size-12 items-center justify-center rounded-full border border-slate-300 bg-slate-100 shadow-lg backdrop-blur-sm transition-colors hover:border-slate-400/80 hover:bg-slate-200/80"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.92 }}
+                    transition={SPRING}
+                  >
+                    <CaretRight size={24} weight="bold" className="text-foreground" />
+                  </motion.div>
+                </button>
               </div>
 
-              {/* Right card - 30° angle (hidden on mobile) */}
+              {/* Right card - pushed right, gap from center, flowing animation */}
               <motion.div
                 key={`right-${rightIndex}`}
-                className="absolute right-[2%] top-1/2 hidden w-[min(260px,22vw)] -translate-y-1/2 sm:right-[4%] sm:w-[min(280px,24vw)] lg:right-[6%] lg:block lg:w-[min(300px,26vw)]"
-                style={{
-                  zIndex: 1,
-                  transformOrigin: 'center center',
-                }}
+                className="hidden w-fit max-w-[26rem] shrink-0 lg:block"
+                style={{ zIndex: 1, transformOrigin: 'center center' }}
                 initial={false}
                 animate={{
+                  x: (dragOffset < 0 ? Math.max(dragOffset * 0.3, -40) : 0) - (dragOffset > 0 ? Math.min(dragOffset * 0.3, 40) : 0),
                   opacity: 0.9,
-                  rotateY: ANGLE,
-                  x: 20 - (dragOffset < 0 ? Math.max(dragOffset * 0.3, -40) : 0) + (dragOffset > 0 ? Math.min(dragOffset * 0.3, 40) : 0),
-                  scale: 0.88,
+                  rotateY: -ANGLE,
+                  scale: 1,
                 }}
                 transition={SPRING}
               >
-                <FeatureCard feature={features[rightIndex]!} isCenter={false} />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`right-content-${rightIndex}`}
+                    className="relative w-full"
+                    initial={{ opacity: 0, x: direction === 1 ? 180 : -180 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{
+                      opacity: 0,
+                      x: direction === 1 ? -180 : 180,
+                      transition: { duration: FLOW_DURATION * 0.6, ease: FLOW_EASE },
+                    }}
+                    transition={{ duration: FLOW_DURATION, ease: FLOW_EASE }}
+                  >
+                    <FeatureCard feature={features[rightIndex]!} isCenter />
+                  </motion.div>
+                </AnimatePresence>
               </motion.div>
             </div>
-
-            {/* Left arrow */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                goPrev();
-              }}
-              aria-label="Previous feature"
-              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 md:left-4 lg:left-[calc(50%-14rem)]"
-            >
-              <motion.div
-                className="flex size-12 items-center justify-center rounded-full border border-sky-200 bg-white/90 shadow-lg backdrop-blur-sm transition-colors hover:border-sky-200/80 hover:bg-sky-50/80"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.92 }}
-                transition={SPRING}
-              >
-                <CaretLeft size={24} weight="bold" className="text-foreground" />
-              </motion.div>
-            </button>
-
-            {/* Right arrow */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                goNext();
-              }}
-              aria-label="Next feature"
-              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 md:right-4 lg:right-[calc(50%-14rem)]"
-            >
-              <motion.div
-                className="flex size-12 items-center justify-center rounded-full border border-sky-200 bg-white/90 shadow-lg backdrop-blur-sm transition-colors hover:border-sky-200/80 hover:bg-sky-50/80"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.92 }}
-                transition={SPRING}
-              >
-                <CaretRight size={24} weight="bold" className="text-foreground" />
-              </motion.div>
-            </button>
           </div>
         </div>
       </div>
@@ -441,13 +471,13 @@ function FeatureCard({
 }) {
   return (
     <motion.div
-      className={`overflow-hidden rounded-2xl border-0 shadow-[0_4px_20px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)] ${
-        isCenter ? 'bg-white/98' : 'bg-white/80 backdrop-blur-sm'
+      className={`group/feature overflow-hidden rounded-[1.5rem] border-2 border-emerald-400/80 shadow-[0_24px_64px_-16px_rgba(16,185,129,0.25)] ring-1 ring-emerald-200/60 ${
+        isCenter ? 'bg-slate-100' : 'bg-slate-100/95 backdrop-blur-sm'
       }`}
       whileHover={
         isCenter ? { y: -6, boxShadow: '0 16px 48px rgba(0,0,0,0.12)' } : {}
       }
-      transition={{ type: 'spring', stiffness: 240, damping: 28 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 24 }}
     >
       <FeatureCardContent feature={feature} isCenter={isCenter} />
     </motion.div>
@@ -463,14 +493,12 @@ function FeatureCardContent({
 }) {
   return (
     <div
-      className={`flex h-full flex-col p-4 sm:p-6 md:p-8 ${
-        isCenter
-          ? 'min-h-[280px] sm:min-h-[340px] md:min-h-[380px]'
-          : 'min-h-[240px] sm:min-h-[280px] md:min-h-[300px]'
+      className={`flex flex-col p-4 sm:p-6 md:p-8 ${
+        isCenter ? 'min-h-[260px]' : 'min-h-[220px]'
       }`}
     >
       <div
-        className={`mb-4 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-100 to-emerald-100 ${
+        className={`mb-4 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-300 ${
           isCenter
             ? 'flex h-20 w-20 text-4xl'
             : 'flex h-14 w-14 text-2xl sm:h-16 sm:w-16 sm:text-3xl'
@@ -479,7 +507,7 @@ function FeatureCardContent({
         <FeatureIcon emoji={feature.icon} title={feature.title} imageFile={feature.imageFile} />
       </div>
       <h3
-        className={`mb-2 font-light tracking-[-0.02em] text-foreground ${
+        className={`mb-2 font-semibold tracking-[-0.02em] text-black ${
           isCenter
             ? 'text-2xl sm:text-3xl md:text-4xl'
             : 'text-lg sm:text-xl md:text-2xl'
@@ -488,7 +516,7 @@ function FeatureCardContent({
         {feature.title}
       </h3>
       <p
-        className={`mb-4 font-light leading-[1.6] tracking-[0.02em] text-muted-foreground ${
+        className={`mb-4 font-medium leading-[1.6] tracking-[0.02em] text-gray-800 ${
           isCenter ? 'text-lg sm:text-xl md:text-xl' : 'text-base sm:text-lg'
         }`}
       >
@@ -498,12 +526,12 @@ function FeatureCardContent({
         {feature.bullets.map((bullet) => (
           <li
             key={bullet}
-            className={`flex items-start gap-3 font-light leading-relaxed ${
+            className={`flex items-start gap-3 font-medium leading-relaxed ${
               isCenter ? 'text-base sm:text-lg' : 'text-sm sm:text-base'
             }`}
           >
             <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
-            <span className="text-emerald-700 tracking-[0.01em]">{bullet}</span>
+            <span className="text-black tracking-[0.01em]">{bullet}</span>
           </li>
         ))}
       </ul>

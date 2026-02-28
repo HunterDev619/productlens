@@ -102,7 +102,7 @@ export function MetricsSection() {
     <section
       id="metrics"
       ref={ref}
-      className="py-20 sm:py-24 bg-gradient-to-br from-[#0066ff]/5 via-white to-[#00d4aa]/5"
+      className="py-10 sm:py-12 bg-gradient-to-br from-[#0066ff]/5 via-white to-[#00d4aa]/5"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -157,14 +157,14 @@ export function MetricsSection() {
           ))}
         </div>
 
-        <motion.p
+        {/* <motion.p
           className="mt-10 text-center text-sm text-muted-foreground"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
           Results are product-specific. Upload your product to generate your analysis.
-        </motion.p>
+        </motion.p> */}
       </div>
     </section>
   );

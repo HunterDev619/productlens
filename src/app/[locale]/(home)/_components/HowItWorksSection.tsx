@@ -176,7 +176,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
   const currentStep = steps[activeIndex];
 
   return (
-    <section id="how-it-works" className="scroll-mt-24 bg-slate-50/80 py-20 sm:py-24">
+    <section id="how-it-works" className="scroll-mt-24 bg-slate-50/80 py-10 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-4xl text-center">
           <h2 className="text-2xl leading-tight font-semibold tracking-[-0.02em] text-foreground sm:text-3xl md:text-4xl lg:text-[2.5rem]">
@@ -191,7 +191,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
               key={step.id}
               type="button"
               onClick={() => handleStepChange(index)}
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: step.id === 'report' ? 1.1 : 1.03 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               className={`rounded-xl px-4 py-2.5 text-sm font-medium tracking-wide transition-all duration-200 sm:px-6 sm:py-3 sm:text-base ${
@@ -206,30 +206,51 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
         </div>
 
         {/* Left: description | Right: image */}
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
-          {/* Left - content with animation */}
-          <div className="flex-1">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, x: -24 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 24 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="space-y-8"
-              >
-                <h3 className="text-2xl font-light tracking-[-0.02em] text-foreground sm:text-3xl md:text-4xl">
-                  {currentStep?.title ?? steps[activeIndex]?.title ?? ''}
-                </h3>
-                <p className="text-lg leading-[1.7] font-light tracking-[0.02em] text-muted-foreground sm:text-xl md:text-2xl">
-                  {currentStep?.description ?? steps[activeIndex]?.description ?? ''}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-stretch lg:gap-16">
+          {/* Left - bordered box matching image size, with hover animation */}
+          <motion.div
+            className="group relative flex aspect-video flex-1 overflow-hidden rounded-[1.5rem] border-2 border-slate-200 bg-white/95 p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] sm:p-8 lg:min-w-[45%]"
+            initial={false}
+            whileHover={{
+              scale: 1.02,
+              boxShadow: '0 24px 64px -16px rgba(16, 185, 129, 0.3), 0 0 0 1px rgba(16, 185, 129, 0.2)',
+              borderColor: 'rgb(16, 185, 129)',
+              transition: { duration: 0.45, ease: [0.22, 0.61, 0.36, 1] },
+            }}
+            transition={{ duration: 0.4, ease: [0.22, 0.61, 0.36, 1] }}
+          >
+            <div className="pointer-events-none absolute inset-0 rounded-[1.25rem] bg-gradient-to-br from-emerald-100/30 via-transparent to-sky-100/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="relative flex h-full flex-col justify-center transition-transform duration-500 group-hover:translate-x-1">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, x: -24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 24 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="space-y-6 sm:space-y-8"
+                >
+                  <h3 className="text-2xl font-black tracking-[-0.02em] text-left text-black sm:text-3xl md:text-4xl">
+                    {currentStep?.title ?? steps[activeIndex]?.title ?? ''}
+                  </h3>
+                  <p className="text-lg leading-[1.7] font-semibold tracking-[0.01em] text-black sm:text-xl md:text-2xl">
+                    {currentStep?.description ?? steps[activeIndex]?.description ?? ''}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
 
-          {/* Right - image (full fit, no cropping) */}
-          <div className="relative flex-1 overflow-hidden lg:min-w-[55%]">
+          {/* Right - image with hover animation */}
+          <motion.div
+            className="group/image relative flex-1 overflow-hidden lg:min-w-[55%]"
+            initial={false}
+            whileHover={{
+              scale: 1.02,
+              transition: { duration: 0.4, ease: [0.22, 0.61, 0.36, 1] },
+            }}
+            transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={`step-${activeIndex}-img-${imageIndex}`}
@@ -241,7 +262,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
                   ease: [0.22, 1, 0.36, 1],
                   x: { type: 'spring', stiffness: 300, damping: 30 },
                 }}
-                className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-[1.5rem] border-2 border-white bg-white shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06),0_4px_24px_rgba(0,0,0,0.08)]"
+                className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-[1.5rem] border-2 border-slate-200 bg-white shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06),0_4px_24px_rgba(0,0,0,0.08)] transition-all duration-500 ease-out hover:border-emerald-300/60 hover:shadow-[0_20px_60px_-16px_rgba(16,185,129,0.25)]"
               >
                 {currentImage && (
                   <Image
@@ -255,7 +276,7 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
                 )}
               </motion.div>
             </AnimatePresence>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

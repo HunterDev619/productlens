@@ -1,19 +1,8 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { CaretLeft, CaretRight } from '@phosphor-icons/react';
-
-function titleToSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[()]/g, '')
-    .replace(/&/g, 'and')
-    .replace(/–/g, '-')
-    .replace(/,/g, '');
-}
+import { useCallback, useRef, useState } from 'react';
 
 const USECASE_IMAGE_FILES = [
   'Product Designers & Engineers.png',
@@ -58,278 +47,108 @@ const useCases = [
   },
 ];
 
-const ANGLE = 30;
+function UseCaseGridCard({ item }: { item: (typeof useCases)[0] }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [rotateDir, setRotateDir] = useState<1 | -1>(1);
 
-/** Header nav titles (Solution/UseCase) -> use case index */
-const SLUG_TO_INDEX: Record<string, number> = {
-  'product-designers-and-engineers': 0,
-  'design-and-engineering': 0,
-  'sustainability-and-esg-teams': 1,
-  'sustainability-and-esg': 1,
-  'manufacturers-and-suppliers': 2,
-  'procurement-and-compliance-officers': 3,
-  'procurement-and-compliance': 3,
-};
-
-export function UseCasesSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1);
-  const n = useCases.length;
-
-  useEffect(() => {
-    const scrollToSection = () => {
-      const el = document.getElementById('use-cases');
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent) => {
+      const el = cardRef.current;
       if (!el) return;
-      const viewport = document.querySelector('[data-scroll-viewport]');
-      if (viewport instanceof HTMLElement) {
-        const elTop = el.getBoundingClientRect().top + viewport.scrollTop - 80;
-        viewport.scrollTo({ top: Math.max(0, elTop), behavior: 'smooth' });
-      } else {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    };
-    const readHash = () => {
-      const hash = typeof window !== 'undefined' ? window.location.hash : '';
-      if (hash === '#use-cases' || hash.startsWith('#use-cases-')) {
-        const slug = hash === '#use-cases' ? null : hash.replace('#use-cases-', '');
-        const idx = slug
-          ? (SLUG_TO_INDEX[slug] ?? useCases.findIndex((u) => titleToSlug(u.title) === slug))
-          : 0;
-        if (idx >= 0) {
-          setActiveIndex(idx);
-          requestAnimationFrame(() => {
-            setTimeout(scrollToSection, 100);
-            setTimeout(scrollToSection, 300);
-            setTimeout(scrollToSection, 600);
-          });
-        }
-      }
-    };
-    readHash();
-    const t1 = setTimeout(readHash, 100);
-    const t2 = setTimeout(readHash, 400);
-    const t3 = setTimeout(readHash, 800);
-    window.addEventListener('hashchange', readHash);
-    window.addEventListener('popstate', readHash);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      window.removeEventListener('hashchange', readHash);
-      window.removeEventListener('popstate', readHash);
-    };
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const enterFromLeft = e.clientX < centerX;
+      setRotateDir(enterFromLeft ? 1 : -1); // left → clockwise (1), right → counterclockwise (-1)
+      setIsHovered(true);
+    },
+    []
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
   }, []);
 
-  const goPrev = () => {
-    setDirection(-1);
-    setActiveIndex((i) => (i - 1 + n) % n);
-  };
+  return (
+    <div
+      ref={cardRef}
+      className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Image layer - rotates 180° on hover, then blur after rotation */}
+      <motion.div
+        className="absolute inset-0 origin-center bg-white"
+        animate={{
+          rotateY: isHovered ? rotateDir * 180 : 0,
+          filter: isHovered ? 'blur(6px)' : 'blur(0px)',
+        }}
+        transition={{
+          rotateY: { duration: 1.6, ease: [0.19, 0.7, 0.25, 1] },
+          filter: isHovered
+            ? { duration: 0.35, delay: 1.6 }
+            : { duration: 0.3, delay: 0 },
+        }}
+      >
+        <Image
+          src={useCaseImageSrc(item.imageIndex)}
+          alt={item.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover"
+          unoptimized
+        />
+      </motion.div>
 
-  const goNext = () => {
-    setDirection(1);
-    setActiveIndex((i) => (i + 1) % n);
-  };
+      {/* Content overlay - appears on hover */}
+      <motion.div
+        className="absolute inset-0 flex flex-col justify-end bg-black/50 p-5 sm:p-6 md:p-8"
+        initial={false}
+        animate={{
+          opacity: isHovered ? 1 : 0,
+          pointerEvents: isHovered ? 'auto' : 'none',
+        }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+      >
+        <div className="flex flex-col gap-3 sm:gap-4">
+          <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl md:text-3xl">
+            {item.title}
+          </h3>
+          <p className="text-base font-medium leading-relaxed text-white/95 sm:text-lg md:text-xl">
+            {item.description}
+          </p>
+        </div>
+      </motion.div>
 
-  const leftIndex = (activeIndex - 1 + n) % n;
-  const centerIndex = activeIndex;
+      {/* Subtle icon badge in corner - visible before hover */}
+      {!isHovered && (
+        <div className="absolute bottom-3 left-3 flex size-10 items-center justify-center rounded-full border border-white/40 bg-white/90 text-xl shadow-sm backdrop-blur-sm">
+          {item.icon}
+        </div>
+      )}
+    </div>
+  );
+}
 
+export function UseCasesSection() {
   return (
     <section
       id="use-cases"
-      className="relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24"
+      className="relative overflow-hidden bg-sky-50/60 py-10 sm:py-12 scroll-mt-24"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h2 className="text-3xl font-bold tracking-[-0.03em] leading-tight text-foreground sm:text-4xl md:text-5xl lg:text-[3rem]">
+        <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-14">
+          <h2 className="text-3xl font-bold tracking-[-0.03em] leading-tight text-foreground sm:text-4xl md:text-5xl lg:text-[2.5rem]">
             Built for Teams That Take Sustainability Seriously
           </h2>
         </div>
 
-        <div className="relative flex min-h-[min(50vh,28rem)] flex-col items-center justify-center gap-8 md:min-h-[min(60vh,30rem)] lg:flex-row lg:gap-0 lg:min-h-[min(70vh,32rem)]">
-          <div
-            className="relative flex w-full max-w-6xl items-center justify-center md:justify-between"
-            style={{ perspective: 2000 }}
-          >
-            {/* Left card - hidden on mobile/tablet */}
-            <motion.div
-              key={`left-${leftIndex}`}
-              className="absolute left-[4%] top-1/2 hidden w-[min(340px,28vw)] -translate-y-1/2 lg:block"
-              style={{ zIndex: 1 }}
-              initial={{ opacity: 0, rotate: -ANGLE, x: direction === 1 ? -60 : 60 }}
-              animate={{
-                opacity: 0.9,
-                rotate: -ANGLE,
-                x: 0,
-                scale: 0.92,
-              }}
-              transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            >
-              <UseCaseCard item={useCases[leftIndex]!} isCenter={false} />
-            </motion.div>
-
-            {/* Center card (left part main – larger) */}
-            <motion.div
-              key={`center-${centerIndex}`}
-              className="relative z-10 w-full max-w-[calc(100%-5rem)] shrink-0 sm:max-w-[min(540px,90vw)] md:max-w-[min(560px,50vw)] lg:w-[min(480px,42vw)]"
-              initial={{ opacity: 0, scale: 0.92, x: direction === 1 ? 100 : -100 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            >
-              <UseCaseCard item={useCases[centerIndex]!} isCenter />
-            </motion.div>
-
-            {/* Left and right arrows – centered */}
-            <div className="absolute left-1/2 top-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center gap-3 sm:gap-4">
-              <button
-                type="button"
-                onClick={goPrev}
-                aria-label="Previous use case"
-              >
-                <motion.div
-                  className="flex size-10 items-center justify-center rounded-full border border-sky-200 bg-white/90 shadow-lg backdrop-blur-sm transition-colors hover:border-sky-200/80 hover:bg-sky-50/80 sm:size-12"
-                  whileHover={{ scale: 1.12, boxShadow: '0 8px 24px rgba(14,165,233,0.2)' }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                >
-                  <CaretLeft size={20} weight="bold" className="text-foreground sm:w-6 sm:h-6" />
-                </motion.div>
-              </button>
-              <button
-                type="button"
-                onClick={goNext}
-                aria-label="Next use case"
-              >
-                <motion.div
-                  className="flex size-10 items-center justify-center rounded-full border border-sky-200 bg-white/90 shadow-lg backdrop-blur-sm transition-colors hover:border-sky-200/80 hover:bg-sky-50/80 sm:size-12"
-                  whileHover={{ scale: 1.12, boxShadow: '0 8px 24px rgba(14,165,233,0.2)' }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                >
-                  <CaretRight size={20} weight="bold" className="text-foreground sm:w-6 sm:h-6" />
-                </motion.div>
-              </button>
-            </div>
-
-            {/* Right part: all 4 images stacked at once, (+15,+15) offset per layer, active in front */}
-            <div className="absolute right-[2%] top-1/2 hidden w-[min(520px,46vw)] -translate-y-1/2 lg:block" style={{ zIndex: 1 }}>
-              <div className="relative aspect-[4/3] w-full overflow-visible pr-[45px] pb-[45px]">
-                {[0, 1, 2, 3].map((i) => {
-                  const imgIdx = (centerIndex + i) % 4;
-                  const offset = i * 15;
-                  const isFront = i === 0;
-                  return (
-                    <motion.div
-                      key={`layer-${i}`}
-                      className="absolute overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
-                      style={{
-                        zIndex: 3 - i,
-                        inset: 0,
-                        transform: `translate(${offset}px, ${offset}px)`,
-                      }}
-                      initial={false}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <AnimatePresence mode="wait" initial={false}>
-                        <motion.div
-                          key={imgIdx}
-                          initial={{ opacity: 0, x: -direction * 60, scale: 0.96 }}
-                          animate={{ opacity: 1, x: 0, scale: 1 }}
-                          exit={{ opacity: 0, x: direction * 60, scale: 0.98 }}
-                          transition={{ type: 'spring', stiffness: 360, damping: 28 }}
-                          className="relative h-full w-full"
-                        >
-                          <Image
-                            src={useCaseImageSrc(imgIdx)}
-                            alt={isFront ? useCases[imgIdx]!.title : ''}
-                            fill
-                            sizes="(max-width: 1024px) 0px, 46vw"
-                            className="object-cover"
-                            priority={imgIdx < 2}
-                            unoptimized
-                            aria-hidden={!isFront}
-                          />
-                        </motion.div>
-                      </AnimatePresence>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile/tablet: same stacked display, all 4 at once, (+15,+15) per layer */}
-          <div className="w-full max-w-2xl px-4 lg:hidden">
-            <div className="relative aspect-[4/3] w-full overflow-visible pr-[45px] pb-[45px]">
-              {[0, 1, 2, 3].map((i) => {
-                const imgIdx = (centerIndex + i) % 4;
-                const offset = i * 15;
-                const isFront = i === 0;
-                return (
-                  <motion.div
-                    key={`mob-layer-${i}`}
-                    className="absolute overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
-                    style={{
-                      zIndex: 3 - i,
-                      inset: 0,
-                      transform: `translate(${offset}px, ${offset}px)`,
-                    }}
-                  >
-                    <AnimatePresence mode="wait" initial={false}>
-                      <motion.div
-                        key={imgIdx}
-                        initial={{ opacity: 0, x: -direction * 60, scale: 0.96 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: direction * 60, scale: 0.98 }}
-                        transition={{ type: 'spring', stiffness: 360, damping: 28 }}
-                        className="relative h-full w-full"
-                      >
-                        <Image
-                          src={useCaseImageSrc(imgIdx)}
-                          alt={isFront ? useCases[imgIdx]!.title : ''}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 0px"
-                          className="object-cover"
-                          priority={imgIdx < 2}
-                          unoptimized
-                          aria-hidden={!isFront}
-                        />
-                      </motion.div>
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
+          {useCases.map((item) => (
+            <UseCaseGridCard key={item.title} item={item} />
+          ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function UseCaseCard({
-  item,
-  isCenter,
-}: {
-  item: (typeof useCases)[0];
-  isCenter: boolean;
-}) {
-  return (
-    <motion.div
-      className={`overflow-hidden rounded-2xl border-0 shadow-[0_4px_20px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)] ${
-        isCenter ? 'bg-white/98' : 'bg-white/80 backdrop-blur-sm'
-      }`}
-      whileHover={isCenter ? { y: -4, boxShadow: '0 12px 40px rgba(0,0,0,0.1)' } : {}}
-      transition={{ duration: 0.2 }}
-    >
-      <div className="flex h-full min-h-[300px] flex-col p-6 sm:min-h-[360px] sm:p-8 md:min-h-[380px] md:p-10">
-        <h3 className="mb-3 text-xl font-semibold tracking-[-0.03em] leading-tight text-foreground sm:text-2xl md:text-3xl lg:text-[1.75rem]">
-          {item.title}
-        </h3>
-        <p className="text-base font-medium leading-[1.7] tracking-[0.01em] text-muted-foreground sm:text-lg md:text-xl">
-          {item.description}
-        </p>
-      </div>
-    </motion.div>
   );
 }

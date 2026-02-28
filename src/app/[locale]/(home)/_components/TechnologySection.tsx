@@ -1,8 +1,8 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
-import { CaretDown } from '@phosphor-icons/react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useCallback, useRef, useState } from 'react';
 
 const TECHNOLOGY_ITEMS = [
   {
@@ -29,121 +29,116 @@ function technologyImageSrc(filename: string): string {
   return `/technology/${encodeURIComponent(filename)}`;
 }
 
+function TechnologyGridCard({
+  item,
+  index,
+}: {
+  item: (typeof TECHNOLOGY_ITEMS)[number];
+  index: number;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [rotateDir, setRotateDir] = useState<1 | -1>(1);
+
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent) => {
+      const el = cardRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const enterFromLeft = e.clientX < centerX;
+      setRotateDir(enterFromLeft ? 1 : -1);
+      setIsHovered(true);
+    },
+    []
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      className="group relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)] sm:min-h-[320px] lg:min-h-[380px]"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Image layer - rotates 180° on hover, then blur after rotation */}
+      <motion.div
+        className="absolute inset-0 origin-center bg-white"
+        animate={{
+          rotateY: isHovered ? rotateDir * 180 : 0,
+          filter: isHovered ? 'blur(6px)' : 'blur(0px)',
+        }}
+        transition={{
+          rotateY: { duration: 1.6, ease: [0.19, 0.7, 0.25, 1] },
+          filter: isHovered
+            ? { duration: 0.35, delay: 1.6 }
+            : { duration: 0.3, delay: 0 },
+        }}
+      >
+        <Image
+          src={technologyImageSrc(item.image)}
+          alt={item.label}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover"
+          unoptimized
+        />
+      </motion.div>
+
+      {/* Content overlay - appears after rotation and blur */}
+      <motion.div
+        className="absolute inset-0 flex flex-col justify-end bg-black/50 p-5 sm:p-6 md:p-8"
+        initial={false}
+        animate={{
+          opacity: isHovered ? 1 : 0,
+          pointerEvents: isHovered ? 'auto' : 'none',
+        }}
+        transition={{
+          opacity: isHovered
+            ? { duration: 0.35, delay: 1.95, ease: 'easeOut' }
+            : { duration: 0.25, delay: 0 },
+        }}
+      >
+        <div className="flex flex-col gap-3 sm:gap-4">
+          <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl md:text-3xl">
+            {item.label}
+          </h3>
+          <p className="text-base font-medium leading-relaxed text-white/95 sm:text-lg md:text-xl">
+            {item.description}
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Subtle badge in corner - visible before hover */}
+      {!isHovered && (
+        <div className="absolute bottom-3 left-3 flex size-10 items-center justify-center rounded-full border border-white/40 bg-white/90 text-lg font-bold text-sky-800 shadow-sm backdrop-blur-sm">
+          {index + 1}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function TechnologySection() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const comboRef = useRef<HTMLDivElement>(null);
-
-  const selected = TECHNOLOGY_ITEMS[selectedIndex]!;
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (comboRef.current && !comboRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    if (isOpen) document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [isOpen]);
-
   return (
     <section
       id="technology"
-      className="relative overflow-hidden bg-sky-50/60 py-20 sm:py-24 scroll-mt-24"
+      className="relative overflow-hidden bg-sky-50/60 py-10 sm:py-12 scroll-mt-24"
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h2 className="text-3xl font-bold tracking-[-0.03em] leading-tight text-foreground sm:text-4xl md:text-5xl lg:text-[3rem]">
+      <div className="mx-auto max-w-[88rem] px-6 lg:px-8">
+        <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-14">
+          <h2 className="text-3xl font-bold tracking-[-0.03em] leading-tight text-foreground sm:text-4xl md:text-5xl lg:text-[2.5rem]">
             ProductLens Patent-Pending Technology
           </h2>
-          <p className="mt-4 text-xl font-medium text-muted-foreground sm:text-2xl">
-            See a Product. Understand Its Full Impact.
-          </p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-12">
-          {/* Left: combobox + description */}
-          <div className="flex flex-col gap-6">
-            <div className="relative" ref={comboRef}>
-              <button
-                type="button"
-                onClick={() => setIsOpen((o) => !o)}
-                aria-haspopup="listbox"
-                aria-expanded={isOpen}
-                aria-label="Select technology topic"
-                className="flex w-full items-center justify-between rounded-xl border border-sky-200 bg-white px-4 py-3.5 text-left shadow-sm transition-colors hover:border-sky-300 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
-              >
-                <span className="font-medium text-foreground">{selected.label}</span>
-                <CaretDown
-                  size={20}
-                  weight="bold"
-                  className={`shrink-0 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.ul
-                    role="listbox"
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute left-0 right-0 top-full z-30 mt-2 max-h-60 overflow-auto rounded-xl border border-sky-200 bg-white py-2 shadow-lg"
-                  >
-                    {TECHNOLOGY_ITEMS.map((item, i) => (
-                      <li key={item.label} role="option" aria-selected={i === selectedIndex}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedIndex(i);
-                            setIsOpen(false);
-                          }}
-                          className={`w-full px-4 py-3 text-left text-sm transition-colors hover:bg-sky-50 ${
-                            i === selectedIndex ? 'bg-sky-50 font-medium text-sky-700' : 'text-foreground'
-                          }`}
-                        >
-                          {item.label}
-                        </button>
-                      </li>
-                    ))}
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <motion.div
-              key={selectedIndex}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              className="rounded-xl border border-sky-100 bg-white/90 p-6 shadow-sm sm:p-8"
-            >
-              <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-                {selected.description}
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Right: image according to selected content */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedIndex}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                className="absolute inset-0"
-              >
-                <img
-                  src={technologyImageSrc(selected.image)}
-                  alt={selected.label}
-                  className="h-full w-full object-cover"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 lg:gap-10">
+          {TECHNOLOGY_ITEMS.map((item, index) => (
+            <TechnologyGridCard key={item.label} item={item} index={index} />
+          ))}
         </div>
       </div>
     </section>

@@ -8,7 +8,7 @@ export function LogoMarquee({ images }: { images: string[] }) {
   const duplicated = [...images, ...images];
 
   return (
-    <div className="w-full max-w-full overflow-hidden bg-white py-8" style={{ contain: 'layout' }}>
+    <div className="w-full max-w-full overflow-hidden bg-white py-4" style={{ contain: 'layout' }}>
       <div className="relative flex min-h-[4rem] items-center justify-center">
         <div className="flex animate-marquee items-center gap-16 pr-16">
           {duplicated.map((src, i) => (
