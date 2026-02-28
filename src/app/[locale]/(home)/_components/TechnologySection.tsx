@@ -72,10 +72,10 @@ function TechnologyGridCard({
           filter: isHovered ? 'blur(6px)' : 'blur(0px)',
         }}
         transition={{
-          rotateY: { duration: 1.6, ease: [0.19, 0.7, 0.25, 1] },
+          rotateY: { duration: 0.85, ease: [0.19, 0.7, 0.25, 1] },
           filter: isHovered
-            ? { duration: 0.35, delay: 1.6 }
-            : { duration: 0.3, delay: 0 },
+            ? { duration: 0.2, delay: 0.85 }
+            : { duration: 0.2, delay: 0 },
         }}
       >
         <Image
@@ -98,8 +98,8 @@ function TechnologyGridCard({
         }}
         transition={{
           opacity: isHovered
-            ? { duration: 0.35, delay: 1.95, ease: 'easeOut' }
-            : { duration: 0.25, delay: 0 },
+            ? { duration: 0.25, delay: 1.05, ease: 'easeOut' }
+            : { duration: 0.2, delay: 0 },
         }}
       >
         <div className="flex flex-col gap-3 sm:gap-4">
