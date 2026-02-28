@@ -56,8 +56,8 @@ const config: Config = {
         },
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
+        'accordion-down': 'accordion-down 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        'accordion-up': 'accordion-up 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         'in': 'enter 150ms cubic-bezier(0.16, 1, 0.3, 1)',
         'out': 'exit 150ms cubic-bezier(0.16, 1, 0.3, 1)',
         marquee: 'marquee 30s linear infinite',

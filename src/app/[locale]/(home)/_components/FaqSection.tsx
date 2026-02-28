@@ -46,11 +46,11 @@ export function FaqSection() {
     <section
       id="faq"
       ref={ref}
-      className="relative overflow-hidden bg-white py-14 sm:py-16"
+      className="relative overflow-hidden bg-slate-50 py-8 sm:py-10"
     >
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.h2
-          className="mb-8 text-center text-4xl font-bold tracking-tight text-black sm:text-4xl"
+          className="mb-10 text-center text-4xl font-bold tracking-tight text-black sm:text-4xl"
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.4 }}
@@ -62,35 +62,35 @@ export function FaqSection() {
           type="single"
           collapsible
           defaultValue="faq-5"
-          className="space-y-3"
+          className="space-y-5 sm:space-y-6"
         >
           {faqItems.map((item, index) => (
             <AccordionPrimitive.Item
               key={index}
               value={`faq-${index}`}
-              className="overflow-hidden rounded-lg border border-[#E0E0E0] bg-white shadow-[0_2px_5px_rgba(0,0,0,0.05)]"
+              className="group/faq overflow-hidden rounded-[1.5rem] border-2 border-emerald-400/80 bg-slate-100 shadow-[0_24px_64px_-16px_rgba(16,185,129,0.25)] ring-1 ring-emerald-200/60"
             >
               <AccordionPrimitive.Header>
-                <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 px-4 py-3.5 text-left text-lg sm:text-xl font-semibold leading-snug text-black outline-none transition-colors hover:bg-gray-50/80 focus-visible:ring-2 focus-visible:ring-[#007bff]/30 data-[state=open]:bg-gray-50/50">
+                <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-xl sm:text-2xl font-semibold leading-snug text-black outline-none transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:bg-slate-200/60 focus-visible:ring-2 focus-visible:ring-[#007bff]/30 data-[state=open]:bg-slate-200/50">
                   <span className="pr-2">{item.question}</span>
-                  <span className="flex shrink-0 text-[#007bff]">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#007bff]/15 to-[#007bff]/5 text-[#007bff] shadow-sm transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110 group-hover:from-[#007bff]/20 group-hover:to-[#007bff]/10 group-data-[state=open]:rotate-90 group-data-[state=open]:from-[#007bff]/20">
                     <Plus
-                      size={20}
+                      size={28}
                       weight="bold"
-                      className="block transition-opacity group-data-[state=open]:hidden"
+                      className="block transition-transform duration-300 group-data-[state=open]:hidden"
                       aria-hidden
                     />
                     <Minus
-                      size={20}
+                      size={28}
                       weight="bold"
-                      className="hidden transition-opacity group-data-[state=open]:block"
+                      className="hidden transition-transform duration-300 group-data-[state=open]:block"
                       aria-hidden
                     />
                   </span>
                 </AccordionPrimitive.Trigger>
               </AccordionPrimitive.Header>
               <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                <p className="border-t border-[#E8E8E8] px-4 py-3 text-base sm:text-lg font-normal leading-relaxed text-black">
+                <p className="border-t border-slate-200 px-5 py-5 text-lg sm:text-xl font-normal leading-relaxed text-black">
                   {item.answer}
                 </p>
               </AccordionPrimitive.Content>

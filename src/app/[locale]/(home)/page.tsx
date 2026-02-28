@@ -110,7 +110,7 @@ export default async function Home() {
       <FaqSection />
 
       {/* Contact Section */}
-      <section id="contact" className="bg-gradient-to-br from-emerald-50 to-emerald-100/80 py-16 text-foreground sm:py-20 lg:py-24">
+      <section id="contact" className="bg-gradient-to-br from-emerald-50 to-emerald-100/80 py-10 text-foreground sm:py-12 lg:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 md:grid-cols-2 md:items-start">
             {/* Left: CTA buttons + extra WhatsApp link (first & third images) */}
