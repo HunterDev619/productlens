@@ -75,30 +75,20 @@ export function Footer() {
 
       {/* Bottom bar: legal + copyright (black bg, dashed separator, light gray text) */}
       <div className="bg-black">
-        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div
-            className="mb-4 border-t border-dashed border-gray-500"
+            className="mb-3 border-t border-dashed border-gray-500"
             aria-hidden
           />
           <div className="flex flex-col gap-3 text-sm text-gray-400 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-              <a
-                href="https://eco-solutise.com/privacy-policy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-gray-200 hover:underline"
-              >
+              <Link href="/privacy-policy" className="transition-colors hover:text-gray-200 hover:underline">
                 Privacy Policy
-              </a>
+              </Link>
               <span className="text-gray-500">|</span>
-              <a
-                href="https://eco-solutise.com/terms-of-use"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-gray-200 hover:underline"
-              >
+              <Link href="/terms-of-use" className="transition-colors hover:text-gray-200 hover:underline">
                 Terms of Use
-              </a>
+              </Link>
             </div>
             <p className="text-center text-gray-400 sm:text-right">
               © ProductLens 2026. Patent Pending.

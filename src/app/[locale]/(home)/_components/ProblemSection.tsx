@@ -12,7 +12,7 @@ export function ProblemSection() {
 
             </h2>
             <p className="text-lg font-normal font-semibold font-black-light leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-xl">
-              Product compliance reporting is a slow, costly, and consultant-heavy process, just as global regulatory pressure and customers’ expectations continue to rise. 
+              Product compliance reporting is a slow, costly, <br></br>and consultant-heavy process, just as global regulatory pressure and customers’ expectations continue to rise. 
             <br></br><br></br>
               ProductLens disrupts by accelerating affordable compliance and sustainability intelligence from months to minutes.
             </p>

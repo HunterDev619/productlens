@@ -33,7 +33,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # Environment variables
-.env
+# .env
 .env.*
 
 # Sentry Config File
@@ -64,6 +64,6 @@ build-archive.log
 <<<<<<< HEAD
 .local
 =======
-.env*.local
+# .env*.local
 
 >>>>>>> d6caddb5d6c40c1d2c0a7100150f39a3759a61fe

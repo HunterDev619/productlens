@@ -44,7 +44,7 @@ export const Logo = ({
       <div className="flex w-full items-center justify-start gap-2">
         <Image
           src="/logo/main.jpg"
-          alt="Product Lens Logo"
+          alt="ProductLens Logo"
           width={config.imageSize}
           height={config.imageSize}
           className="h-auto max-w-8 object-contain"

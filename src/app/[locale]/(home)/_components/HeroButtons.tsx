@@ -32,7 +32,7 @@ export function HeroButtons() {
           className={`${buttonStyle} bg-emerald-600 hover:bg-emerald-500/90 hover:shadow-xl`}
           asChild
         >
-          <Link href="#how-it-works">
+          <Link href="/#features">
             Solution
             <ArrowSquareOut
               size={20}

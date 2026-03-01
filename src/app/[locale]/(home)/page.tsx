@@ -16,7 +16,7 @@ import { Footer } from './_components/Footer';
 import { ContactForm } from './_components/ContactForm';
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Product Lens - AI Product Intelligence & Sustainability Platform',
+  title: 'ProductLens - AI Product Intelligence & Sustainability Platform',
   description: 'Transform product analysis with instant AI image recognition. Get comprehensive market intelligence, sustainability reports, and carbon tracking in seconds.',
   keywords: [
     'product intelligence',
@@ -35,12 +35,12 @@ export const metadata: Metadata = generateSEOMetadata({
   jsonLd: {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    'name': 'Product Lens - AI Product Intelligence & Sustainability Platform',
+    'name': 'ProductLens - AI Product Intelligence & Sustainability Platform',
     'description': 'Transform product analysis with instant AI image recognition. Get comprehensive market intelligence, sustainability reports, and carbon tracking in seconds.',
     'url': 'https://productlens.ai',
     'mainEntity': {
       '@type': 'SoftwareApplication',
-      'name': 'Product Lens',
+      'name': 'ProductLens',
       'applicationCategory': 'ProductivityApplication',
       'offers': {
         '@type': 'Offer',
@@ -109,25 +109,25 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 md:grid-cols-2 md:items-start">
             {/* Left: CTA buttons + extra WhatsApp link (first & third images) */}
-            <div className="flex flex-col items-stretch gap-4 max-w-sm md:self-center">
-              <div className="mb-2">
-                <h2 className="mb-2 text-3xl font-bold text-foreground sm:text-4xl">
+            <div className="flex flex-col items-stretch gap-5 max-w-md">
+              <div className="mb-4 space-y-4 md:mb-16">
+                <h2 className="text-4xl font-bold leading-tight text-foreground sm:text-5xl">
                   Get In Touch
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground sm:text-lg">
                   Fill out the form or reach us directly via WhatsApp and we’ll get back to you very soon.
                 </p>
               </div>
 
               <a
-                href="mailto:contact@eco-solutise.com?subject=Book%20a%20demo%20with%20ProductLens"
+                href="mailto:contact@productlens.ai?subject=Book%20a%20demo%20with%20ProductLens"
                 className="inline-flex items-center justify-center rounded-lg bg-[#065f46] px-6 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#064e3b]"
               >
                 Book A Demo
               </a>
 
               <a
-                href="https://wa.me/6590289450"
+                href="https://wa.me/6580834394"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 rounded-lg border border-[#16a34a] bg-white px-6 py-3 text-sm font-semibold text-[#16a34a] shadow-sm transition-colors hover:bg-[#ecfdf3]"
@@ -135,18 +135,19 @@ export default async function Home() {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#25D366] text-base text-white">
                   W
                 </span>
-                <span>WhatsApp</span>
+                <span>Connect to +65 8083 4394 
+                </span>
               </a>
 
               {/* Extra contact link (third image position) */}
               <a
-                href="mailto:productlens.ai@eco-solutise.com"
-                className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-900"
+                href="mailto:contact@productlens.ai"
+                className="mt-2 inline-flex items-center gap-2 text-base font-medium text-emerald-700 hover:text-emerald-900"
               >
-                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-[11px] text-white">
+                {/* <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-[11px] text-white">
                   @
-                </span>
-                <span>productlens.ai@eco-solutise.com</span>
+                </span> */}
+                <span>contact@productlens.ai</span>
               </a>
             </div>
 

@@ -97,7 +97,7 @@ const features = [
   },
   {
     icon: '🌱',
-    title: 'ISO 14040 / 14044 ',
+    title: 'Product Lifecycle Assessment(ISO 14040 / 14044) ',
     subtitle: 'Cradle-to-Grave CO₂ Analysis',
     imageFile: 'ISO 14040 .PNG',
     bullets: [
