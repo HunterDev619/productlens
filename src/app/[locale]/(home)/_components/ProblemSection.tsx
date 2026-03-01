@@ -7,7 +7,7 @@ export function ProblemSection() {
         <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
           {/* Left - content (middle part) */}
           <div className="flex-1 space-y-6 max-w-2xl">
-            <h2 className="text-3xl font-semibold tracking-[-0.03em] leading-[1.2] text-foreground sm:text-4xl md:text-[2.75rem]">
+            <h2 className="text-3xl font-semibold tracking-[-0.03em] leading-[1.2] text-foreground sm:text-1xl md:text-1.5xl lg:text-[1.8rem]">
              Developing Sustainability Intelligence and Decarbonisation Pathways
 
             </h2>

@@ -60,7 +60,7 @@ function TechnologyGridCard({
   return (
     <div
       ref={cardRef}
-      className="group relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)] sm:min-h-[320px] lg:min-h-[380px]"
+      className={`group relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)] sm:min-h-[320px] lg:min-h-[380px] ${isHovered ? 'z-20' : 'z-0'}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

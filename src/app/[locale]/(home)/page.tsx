@@ -2,15 +2,12 @@ import type { Metadata } from 'next';
 import { generateMetadata as generateSEOMetadata } from '@/utils/seo';
 import { FeaturesSection } from './_components/FeaturesSection';
 import { HowItWorksSection } from './_components/HowItWorksSection';
-import { MetricsSection } from './_components/MetricsSection';
 import { FaqSection } from './_components/FaqSection';
 import { PricingSection } from './_components/PricingSection';
 import { UseCasesSection } from './_components/UseCasesSection';
 import { TechnologySection } from './_components/TechnologySection';
 import { getAnalyseImages } from './_lib/getAnalyseImages';
-import { getFlowImages } from './_lib/getFlowImages';
 import { VideoBackground } from './_components/VideoBackground';
-import { LogoMarquee } from './_components/LogoMarquee';
 import { HeroButtons } from './_components/HeroButtons';
 import { ProblemSection } from './_components/ProblemSection';
 import RedirectResetPassword from './_components/redirect-reset-password';
@@ -56,7 +53,6 @@ export const metadata: Metadata = generateSEOMetadata({
 
 export default async function Home() {
   const analyseImages = getAnalyseImages();
-  const flowImages = getFlowImages();
   return (
     <div className="min-h-screen min-w-0 overflow-x-hidden bg-background max-w-[100vw]">
       <RedirectResetPassword />
@@ -70,20 +66,21 @@ export default async function Home() {
           <div className="flex flex-col items-center gap-12 lg:flex-row">
             {/* Hero Content - buttons first */}
             <div className="z-10 flex-1 text-center lg:text-left">
-              <h1 className="mb-4 text-2xl font-bold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
-                Transform Your Product Images into Compliance - In Minutes
+              <h1 className="mb-4 sm:mb-6">
+                <span className="inline-block whitespace-nowrap rounded-xl bg-white px-4 py-3 text-2xl font-bold leading-tight text-gray-900 sm:px-6 sm:py-4 sm:text-4xl md:text-5xl lg:text-6xl">
+                  Transform Your Product Images into Compliance Reports- In Minutes
+                </span>
               </h1>
-              <p className="mx-auto mb-6 max-w-2xl text-base leading-relaxed text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] sm:mb-8 sm:text-lg md:text-xl lg:mx-0 lg:text-2xl">
-                Generate sustainability intelligence reports and decarbonisation strategies with 3 simple steps
+              <p className="mx-auto mb-6 max-w-1xl sm:mb-8 lg:mx-0">
+                <span className="inline-block rounded-xl bg-white px-4 py-3 text-base font-normal leading-relaxed text-gray-900 sm:px-6 sm:py-4 sm:text-lg md:text-xl lg:text-2xl">
+                  Generate sustainability intelligence reports and decarbonisation strategies in 3 simple steps
+                </span>
               </p>
               <HeroButtons />
             </div>
           </div>
         </div>
       </section>
-
-      {/* Logo marquee under video */}
-      <LogoMarquee images={flowImages} />
 
       {/* Problem Section */}
       <ProblemSection />
@@ -93,9 +90,6 @@ export default async function Home() {
 
       {/* How It Works Section */}
       <HowItWorksSection images={analyseImages} />
-
-      {/* Metrics / Social Proof Section */}
-      <MetricsSection />
 
       {/* Use Cases Section */}
       <UseCasesSection />
@@ -158,7 +152,7 @@ export default async function Home() {
             {/* Right: Contact form (second image) */}
             <div className="w-full rounded-2xl border border-emerald-700/40 bg-white p-6 shadow-sm sm:p-8">
               <h3 className="mb-6 text-xl font-semibold text-gray-900 sm:text-2xl">
-                Fill out the form below and we will be in touch soon.
+                Fill out the form below and we will be in<br></br> touch soon.
               </h3>
               <ContactForm />
 
