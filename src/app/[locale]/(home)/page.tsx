@@ -57,26 +57,27 @@ export default async function Home() {
     <div className="min-h-screen min-w-0 overflow-x-hidden bg-background max-w-[100vw]">
       <RedirectResetPassword />
       <Header />
-      {/* Hero Section */}
-      <section className="relative flex min-h-screen items-center overflow-hidden py-20 sm:py-32">
-        {/* Video Background - video 1 only */}
+      {/* Hero Section - content at bottom */}
+      <section className="relative flex min-h-screen flex-col overflow-hidden">
+        {/* Video Background */}
         <VideoBackground />
 
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-0 sm:px-4 lg:px-8">
-          <div className="flex flex-col items-center gap-12 lg:flex-row">
-            {/* Hero Content - buttons first */}
-            <div className="z-10 flex-1 text-center lg:text-left">
-              <h1 className="mb-4 sm:mb-6">
-                <span className="inline-block whitespace-nowrap rounded-xl bg-white px-4 py-3 text-2xl font-bold leading-tight text-gray-900 sm:px-6 sm:py-4 sm:text-2xl md:text-3xl lg:text-4xl">
+        <div className="relative z-10 mt-auto w-full px-4 pb-8 sm:px-6 sm:pb-10 lg:px-8 lg:pb-12">
+          <div className="mx-auto flex max-w-7xl flex-col items-start gap-4 sm:gap-6">
+            <div className="w-full max-w-2xl text-left lg:max-w-xl">
+              <h1 className="mb-3 sm:mb-4">
+                <span className="inline-block whitespace-nowrap rounded-xl bg-white px-3 py-2 text-xl font-bold leading-tight text-gray-900 sm:px-5 sm:py-3 sm:text-2xl md:text-3xl lg:text-4xl">
                   Transform Your Product Images into Compliance Reports- In Minutes
                 </span>
               </h1>
-              <p className="mx-auto mb-6 max-w-1xl sm:mb-8 lg:mx-0">
-                <span className="inline-block rounded-xl bg-white px-4 py-3 text-base font-normal leading-relaxed text-gray-900 sm:px-6 sm:py-4 sm:text-lg md:text-xl lg:text-2xl">
+              <p className="mb-4 sm:mb-5">
+                <span className="inline-block whitespace-nowrap rounded-xl bg-white px-3 py-2 text-sm font-normal leading-relaxed text-gray-900 sm:px-5 sm:py-3 sm:text-base md:text-lg lg:text-xl">
                   Generate sustainability intelligence reports and decarbonisation strategies in 3 simple steps
                 </span>
               </p>
-              <HeroButtons />
+              <div className="flex justify-start">
+                <HeroButtons />
+              </div>
             </div>
           </div>
         </div>
