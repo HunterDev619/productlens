@@ -83,14 +83,14 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <HowItWorksSection images={analyseImages} />
+
       {/* Problem Section */}
       <ProblemSection />
 
       {/* Features Section */}
       <FeaturesSection />
-
-      {/* How It Works Section */}
-      <HowItWorksSection images={analyseImages} />
 
       {/* Use Cases Section */}
       <UseCasesSection />

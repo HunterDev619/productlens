@@ -8,7 +8,7 @@ export function ProblemSection() {
           {/* Left - content (middle part) */}
           <div className="flex-1 space-y-6 max-w-2xl">
             <h2 className="text-3xl font-semibold tracking-[-0.03em] leading-[1.2] text-foreground sm:text-1xl md:text-1.5xl lg:text-[1.8rem]">
-             Developing Sustainability Intelligence and Decarbonisation Pathways
+            Disrupting Product Compliance and Reporting
 
             </h2>
             <p className="text-lg font-normal font-semibold font-black-light leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-xl">
