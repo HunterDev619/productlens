@@ -56,7 +56,7 @@ const scrollToSection = (href: string, onClose: () => void) => {
 };
 
 const mobileNavSections = [
-  { label: 'Solution', value: 'solution', href: '/#how-it-works' },
+  { label: 'Solution', value: 'solution', href: '/#features' },
   { label: 'Technology', value: 'technology', href: '/#technology' },
   { label: 'Pricing', value: 'pricing', href: '/#pricing' },
   { label: 'Use Case', value: 'usecase', href: '/#use-cases' },
@@ -81,7 +81,7 @@ export const Header = () => {
 
         {/* Navigation - center (desktop) */}
         <nav className="hidden flex-1 items-center justify-center gap-6 xl:gap-8 lg:flex">
-          <Link href="/#how-it-works">
+          <Link href="/#features">
             <motion.span
               className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
               whileHover={{ scale: 1.06, y: -2 }}
