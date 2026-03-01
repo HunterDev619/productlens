@@ -8,7 +8,7 @@ const USECASE_IMAGE_FILES = [
   'Product Designers & Engineers.png',
   'Sustainability & ESG Teams.png',
   'Manufacturers & Suppliers.png',
-  'Procurement & Compliance Officers.png',
+  'Procurement & Compliance.png',
 ] as const;
 
 function useCaseImageSrc(index: number): string {
@@ -26,9 +26,9 @@ const useCases = [
   },
   {
     icon: '🌱',
-    title: 'Sustainability & ESG Teams',
+    title: 'Sustainability & ESG',
     description:
-      'Generate audit-ready documentation for CSRD, ISO 14044, and procurement questionnaires without weeks of consultant engagement.',
+      'product lifecycle assessment (ISO 14040/14044), environmental impact analysis IPCC AR6, circularity (ISO 59020) and decarbonisation strategies.',
     imageIndex: 1,
   },
   {
@@ -40,7 +40,7 @@ const useCases = [
   },
   {
     icon: '📋',
-    title: 'Procurement & Compliance Officers',
+    title: 'Procurement & Compliance',
     description:
       'Screen supplier products for environmental risk and compliance alignment. Compare products side-by-side across lifecycle stages.',
     imageIndex: 3,

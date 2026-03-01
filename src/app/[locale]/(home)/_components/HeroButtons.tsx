@@ -25,7 +25,7 @@ function scrollToContact() {
 
 export function HeroButtons() {
   return (
-    <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
+    <div className="flex flex-col items-start gap-4 sm:flex-row sm:justify-start">
       <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
         <Button
           size="lg"

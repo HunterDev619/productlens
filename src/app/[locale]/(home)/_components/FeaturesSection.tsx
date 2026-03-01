@@ -101,7 +101,7 @@ const features = [
     subtitle: 'Cradle-to-Grave CO₂ Analysis',
     imageFile: 'ISO 14040 .PNG',
     bullets: [
-      'Full Lifecycle Emissions',
+      'Cradle to Grave',
       'Stage-by-Stage Breakdown',
       'Hotspot Identification',
     ],
@@ -119,8 +119,8 @@ const features = [
   },
   {
     icon: '🗺️',
-    title: 'Supply-Chain Traceability',
-    subtitle: 'Global Material Mapping',
+    title: 'Supply-Chain Visualisation',
+    subtitle: 'Global  Mapping',
     imageFile: 'Supply-Chain Traceability.png',
     bullets: [
       'Origin & Transport Routes',
@@ -146,8 +146,7 @@ const features = [
     imageFile: 'Product Analysis History.png',
     bullets: [
       'Trend Tracking',
-      'Version Comparisons',
-      'Report Exports',
+      'Export PDF Reports ',
     ],
   },
   {
@@ -287,8 +286,8 @@ export function FeaturesSection() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h3 className="text-2xl font-bold tracking-[-0.02em] leading-tight text-black sm:text-3xl md:text-3xl lg:text-4xl xl:text-[2.3rem]">
-            Everything You Need to Measure, Report, and Reduce
+          <h3 className="text-2xl font-bold tracking-[-0.02em] leading-tight text-black sm:text-3xl md:text-3xl lg:text-4xl xl:text-[2.1rem]">
+          Simplify Product Compliance & Sustainability Intelligence
           </h3>
         </div>
 
