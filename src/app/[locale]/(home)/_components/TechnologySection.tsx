@@ -32,7 +32,7 @@ export function TechnologySection() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-stretch lg:gap-16">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
           {/* Left - content */}
           <div className="flex flex-1 flex-col justify-center rounded-[1.25rem] border border-gray-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] sm:p-8 lg:min-w-[45%]">
             <h3 className="text-xl font-bold leading-tight text-foreground sm:text-2xl md:text-3xl">
@@ -50,15 +50,16 @@ export function TechnologySection() {
             </div>
           </div>
 
-          {/* Right - image */}
-          <div className="relative flex flex-1 lg:min-w-[55%]">
-            <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-[1.25rem] border-2 border-double border-gray-200 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.06)]">
+          {/* Right - image: position matches left content (top-align), 20px from right edge */}
+          <div className="relative flex flex-1 items-start justify-end pr-5 lg:min-w-[55%]">
+            <div className="relative inline-block max-w-full rounded-[1.25rem] border-2 border-gray-300 bg-white p-[30px] shadow-[0_0_0_1px_rgba(0,0,0,0.04)]">
               <Image
                 src={technologyImageSrc(TECHNOLOGY_ITEM.image)}
                 alt={TECHNOLOGY_ITEM.label}
-                fill
+                width={1200}
+                height={800}
+                className="block max-w-full h-auto object-contain"
                 sizes="(max-width: 1024px) 100vw, 55vw"
-                className="object-contain"
                 unoptimized
               />
             </div>

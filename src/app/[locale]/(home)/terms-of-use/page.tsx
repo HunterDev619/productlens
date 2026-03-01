@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Footer } from '../_components/Footer';
+import { ScrollToTopOnMount } from '../_components/ScrollToTopOnMount';
 
 export const metadata: Metadata = {
   title: 'Terms of Use | ProductLens.ai',
@@ -12,10 +13,11 @@ const sectionClass = 'space-y-4';
 export default function TermsOfUsePage() {
   return (
     <div className="min-h-screen w-full bg-background">
+      <ScrollToTopOnMount />
       <main className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <article className="w-full space-y-8 text-gray-800 text-xl">
-          <header className="space-y-2 pt-[200px] text-left w-full">
-            <h1 className="text-5xl font-bold text-foreground sm:text-6xl">
+          <header className="space-y-2 pt-[300px] text-left w-full">
+            <h1 className="text-5xl font-bold text-foreground sm:text-4xl">
               TERMS OF USE
             </h1>
             <p className="text-2xl font-medium text-foreground">productlens.ai</p>

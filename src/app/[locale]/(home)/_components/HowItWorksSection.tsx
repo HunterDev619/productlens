@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -160,41 +160,28 @@ export function HowItWorksSection({ images = defaultImages }: { images?: string[
 
         {/* Left: description | Right: image */}
         <div className="flex flex-col gap-12 lg:flex-row lg:items-stretch lg:gap-16">
-          {/* Left - bordered box with subtle border/shadow per reference image */}
-          <motion.div
-            className="group relative flex aspect-video flex-1 overflow-hidden rounded-[1.25rem] border border-gray-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] sm:p-8 lg:min-w-[45%]"
-            initial={false}
-          >
-            <div className="relative flex h-full flex-col justify-center transition-transform duration-500 group-hover:translate-x-1">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, x: -24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 24 }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="space-y-6 sm:space-y-8"
-                >
-                  <h3 className="text-3xl font-semibold tracking-[-0.03em] leading-[1.2] text-left text-foreground sm:text-1xl md:text-1.5xl lg:text-[1.8rem]">
-                    {currentStep?.title ?? steps[activeIndex]?.title ?? ''}
-                  </h3>
-                  <p className="text-lg font-normal leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-xl">
-                    {currentStep?.description ?? steps[activeIndex]?.description ?? ''}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
+          {/* Left - bordered box with subtle border/shadow */}
+          <div className="relative flex aspect-video flex-1 overflow-hidden rounded-[1.25rem] border border-gray-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] sm:p-8 lg:min-w-[45%]">
+            <div className="relative flex h-full flex-col justify-center space-y-6 sm:space-y-8">
+              <h3 className="text-3xl font-semibold tracking-[-0.03em] leading-[1.2] text-left text-foreground sm:text-1xl md:text-1.5xl lg:text-[1.8rem]">
+                {currentStep?.title ?? steps[activeIndex]?.title ?? ''}
+              </h3>
+              <p className="text-lg font-semibold leading-[1.75] tracking-[0.01em] text-zinc-600 sm:text-xl">
+                {currentStep?.description ?? steps[activeIndex]?.description ?? ''}
+              </p>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Right - image with soft outline, display origin/full image */}
-          <div className="relative flex-1 overflow-hidden lg:min-w-[55%]">
-            <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-[1.25rem] border border-gray-200 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.04)]">
+          {/* Right - image box sizes to original image, 30px padding, border */}
+          <div className="relative flex flex-1 items-start justify-center lg:min-w-[55%]">
+            <div className="relative inline-block max-w-full rounded-[1.25rem] border-2 border-gray-300 bg-white p-[30px] shadow-[0_0_0_1px_rgba(0,0,0,0.04)]">
               {currentImage && (
                 <Image
                   src={currentImage}
                   alt={`${currentStep?.title ?? steps[activeIndex]?.title ?? 'Step'} - ProductLens`}
-                  fill
-                  className="object-contain"
+                  width={1200}
+                  height={800}
+                  className="block max-w-full h-auto object-contain"
                   sizes="(max-width: 1024px) 100vw, 55vw"
                   priority={activeIndex === 0}
                 />

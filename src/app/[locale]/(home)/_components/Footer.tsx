@@ -73,11 +73,11 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar: legal + copyright (black bg, dashed separator, light gray text) - 200px pulled down */}
-      <div className="bg-black pt-[200px]">
-        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+      {/* Bottom bar: legal + copyright (black bg, dashed separator, light gray text) */}
+      <div className="bg-black">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div
-            className="mb-4 border-t border-dashed border-gray-500"
+            className="mb-3 border-t border-dashed border-gray-500"
             aria-hidden
           />
           <div className="flex flex-col gap-3 text-sm text-gray-400 sm:flex-row sm:items-center sm:justify-between">
