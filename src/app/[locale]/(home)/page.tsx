@@ -67,7 +67,7 @@ export default async function Home() {
             {/* Hero Content - buttons first */}
             <div className="z-10 flex-1 text-center lg:text-left">
               <h1 className="mb-4 sm:mb-6">
-                <span className="inline-block whitespace-nowrap rounded-xl bg-white px-4 py-3 text-2xl font-bold leading-tight text-gray-900 sm:px-6 sm:py-4 sm:text-4xl md:text-5xl lg:text-6xl">
+                <span className="inline-block whitespace-nowrap rounded-xl bg-white px-4 py-3 text-2xl font-bold leading-tight text-gray-900 sm:px-6 sm:py-4 sm:text-2xl md:text-3xl lg:text-4xl">
                   Transform Your Product Images into Compliance Reports- In Minutes
                 </span>
               </h1>
