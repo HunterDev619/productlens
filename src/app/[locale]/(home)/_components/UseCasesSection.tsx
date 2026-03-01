@@ -137,11 +137,11 @@ export function UseCasesSection() {
       className="relative overflow-hidden bg-sky-50/60 py-10 sm:py-12 scroll-mt-24"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-14">
+        {/* <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-14">
           <h2 className="text-3xl font-bold tracking-[-0.03em] leading-tight text-foreground sm:text-4xl md:text-5xl lg:text-[2.5rem]">
             Built for Teams That Take Sustainability Seriously
           </h2>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
           {useCases.map((item) => (

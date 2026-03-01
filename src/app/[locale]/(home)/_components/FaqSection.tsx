@@ -7,35 +7,31 @@ import { Minus, Plus } from '@phosphor-icons/react';
 
 const faqItems = [
   {
-    question: 'What types of products can Product Lens analyze?',
+    question: 'What types of products can ProductLens analyze?',
     answer:
-      'Product Lens can analyze a wide range of consumer and industrial products including electronics, textiles, packaging, automotive parts, food products, and more. Our AI is continuously trained on new product categories to expand coverage.',
+      'ProductLens can analyze a wide range of consumer and industrial products including electronics, textiles, packaging, automotive parts, food products, and more. Our AI is continuously trained on new product categories to expand coverage.',
   },
   {
-    question: 'How accurate is the carbon footprint calculation?',
+    question: 'How accurate are the analyses, calculations and reports?',
     answer:
-      'Our carbon calculations use verified emission factors from reputable databases including IPCC, EPA, and industry-specific LCA databases. Accuracy typically ranges from 85-95% depending on product complexity and data availability. All sources are cited in reports.',
+      'ProductLens analyses product images using AI computer vision, advanced deep learning models and LLM with >90% recognition accuracy, and extracts structured product data with up to 70% accuracy.',
   },
   {
     question: 'Is the platform compliant with international standards?',
     answer:
-      'Yes, Product Lens reports comply with ISO 14040 (Life Cycle Assessment), ISO 14067 (Carbon Footprint), and align with IPCC AR6 Synthesis Report methodologies. Our reports are audit-ready for ESG and sustainability disclosures.',
+      'Yes, ProductLens reports comply with ISO 14040 (Life Cycle Assessment), ISO 14067 (Carbon Footprint), and align with IPCC AR6 Synthesis Report methodologies. Our reports are audit-ready for ESG and sustainability disclosures.',
   },
   {
-    question: 'Can I integrate Product Lens with my existing systems?',
+    question: 'Can ProductLens.ai be used for regulatory or critical decisions?',
     answer:
-      'Professional and Enterprise plans include API access for seamless integration with your ERP, PLM, or sustainability management systems. We also offer custom integrations and webhooks for automated workflows.',
+      'While highly useful, AI outputs should be considered advisory. Always apply professional judgement and confirm with trusted sources for critical or regulated decisions.',
   },
   {
-    question: 'How does the EDG grant work for Singapore SMEs?',
+    question: 'Is my information secure?',
     answer:
-      'The Enterprise Development Grant (EDG) can support up to 50% of qualifying costs for digital transformation projects. Product Lens qualifies as an eligible solution. Our team can assist with grant application documentation and requirements.',
+      'Yes — we implement industry-standard security measures including encryption, secure hosting and access controls to protect your data.',
   },
-  {
-    question: 'What kind of support do you provide?',
-    answer:
-      'We offer tiered support based on your plan: email support for Starter, priority support for Professional, and dedicated account management for Enterprise customers. All plans include comprehensive documentation and training resources.',
-  },
+ 
 ];
 
 export function FaqSection() {

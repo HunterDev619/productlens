@@ -11,8 +11,8 @@ const plans = [
     description: '',
     features: [
       '500 product analyses/month',
-      'Advanced sustainability reports',
-      'Supply chain mapping',
+      'Comprehensive sustainability reports',
+      'Supply-chain mapping',
       'Decarbonisation roadmaps',
       'Printable PDF download',
     ],
@@ -24,8 +24,8 @@ const plans = [
     features: [
       'Unlimited analyses',
       'White-label solution',
-      'Advanced sustainability reports',
-      'Supply chain mapping',
+      'Comprehensive sustainability reports',
+      'Supply-chain mapping',
       'Decarbonisation roadmaps',
       'Printable PDF download',
       'Upload and analyse CSV files',
@@ -45,7 +45,7 @@ export function PricingSection() {
       ref={ref}
       className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 py-8 sm:py-10"
     >
-      <div className="mx-auto flex max-w-4xl flex-col px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-5xl flex-col px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[80px] flex-1 flex-col justify-center">
           <div className="flex flex-1 basis-0 items-end" aria-hidden />
           <motion.div
@@ -100,7 +100,7 @@ export function PricingSection() {
                   )}
                 </div>
 
-                <ul className="mb-4 space-y-2.5 text-base sm:text-lg">
+                <ul className="mb-4 space-y-4 text-base sm:text-lg">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">
                       <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-[10px] font-bold text-emerald-600">
