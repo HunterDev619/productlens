@@ -68,14 +68,14 @@ export const Header = () => {
 
   return (
   <motion.header
-    className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white"
+    className="fixed inset-x-0 top-0 z-50 border-b border-gray-800 bg-black"
     initial={{ opacity: 0, y: -20 }}
     animate={{ opacity: 1, y: 0, transition: { delay: 0.15, duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
   >
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="flex h-14 sm:h-16 w-full items-center justify-between md:h-[4.5rem]">
         {/* Logo - left corner */}
-        <div className="shrink-0 header-logo">
+        <div className="shrink-0 header-logo [&_span]:!from-white [&_span]:!to-emerald-400">
           <Logo size="md" showText={true} href="/" className="transition-opacity hover:opacity-95" />
         </div>
 
@@ -83,7 +83,7 @@ export const Header = () => {
         <nav className="hidden flex-1 items-center justify-center gap-6 xl:gap-8 lg:flex">
           <Link href="/#how-it-works">
             <motion.span
-              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-white leading-7 transition-colors hover:text-emerald-400"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -93,7 +93,7 @@ export const Header = () => {
           </Link>
           <Link href="/#technology">
             <motion.span
-              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-white leading-7 transition-colors hover:text-emerald-400"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -103,7 +103,7 @@ export const Header = () => {
           </Link>
           <Link href="/#pricing">
             <motion.span
-              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-white leading-7 transition-colors hover:text-emerald-400"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -113,7 +113,7 @@ export const Header = () => {
           </Link>
           <Link href="/#use-cases">
             <motion.span
-              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-white leading-7 transition-colors hover:text-emerald-400"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -123,7 +123,7 @@ export const Header = () => {
           </Link>
           <Link href="/#faq">
             <motion.span
-              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-white leading-7 transition-colors hover:text-emerald-400"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -140,7 +140,7 @@ export const Header = () => {
             className="cursor-pointer"
           >
             <motion.span
-              className="block text-base font-bold tracking-wide text-black leading-7 transition-colors hover:text-emerald-600"
+              className="block text-base font-bold tracking-wide text-white leading-7 transition-colors hover:text-emerald-400"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -167,7 +167,7 @@ export const Header = () => {
               <button
                 type="button"
                 aria-label="Open menu"
-                className="flex size-10 items-center justify-center rounded-lg text-gray-900 hover:bg-gray-100"
+                className="flex size-10 items-center justify-center rounded-lg text-white hover:bg-gray-800"
               >
                 <List size={24} weight="bold" />
               </button>

@@ -2,15 +2,12 @@ import type { Metadata } from 'next';
 import { generateMetadata as generateSEOMetadata } from '@/utils/seo';
 import { FeaturesSection } from './_components/FeaturesSection';
 import { HowItWorksSection } from './_components/HowItWorksSection';
-import { MetricsSection } from './_components/MetricsSection';
 import { FaqSection } from './_components/FaqSection';
 import { PricingSection } from './_components/PricingSection';
 import { UseCasesSection } from './_components/UseCasesSection';
 import { TechnologySection } from './_components/TechnologySection';
 import { getAnalyseImages } from './_lib/getAnalyseImages';
-import { getFlowImages } from './_lib/getFlowImages';
 import { VideoBackground } from './_components/VideoBackground';
-import { LogoMarquee } from './_components/LogoMarquee';
 import { HeroButtons } from './_components/HeroButtons';
 import { ProblemSection } from './_components/ProblemSection';
 import RedirectResetPassword from './_components/redirect-reset-password';
@@ -56,7 +53,6 @@ export const metadata: Metadata = generateSEOMetadata({
 
 export default async function Home() {
   const analyseImages = getAnalyseImages();
-  const flowImages = getFlowImages();
   return (
     <div className="min-h-screen min-w-0 overflow-x-hidden bg-background max-w-[100vw]">
       <RedirectResetPassword />
@@ -71,13 +67,13 @@ export default async function Home() {
             {/* Hero Content - buttons first */}
             <div className="z-10 flex-1 text-center lg:text-left">
               <h1 className="mb-4 sm:mb-6">
-                <span className="inline-block rounded-xl bg-white px-4 py-3 text-2xl font-bold leading-tight text-gray-900 sm:px-6 sm:py-4 sm:text-4xl md:text-5xl lg:text-6xl">
-                  Transform Your Product Images into Compliance - In Minutes
+                <span className="inline-block whitespace-nowrap rounded-xl bg-white px-4 py-3 text-2xl font-bold leading-tight text-gray-900 sm:px-6 sm:py-4 sm:text-4xl md:text-5xl lg:text-6xl">
+                  Transform Your Product Images into Compliance Reports- In Minutes
                 </span>
               </h1>
               <p className="mx-auto mb-6 max-w-1xl sm:mb-8 lg:mx-0">
                 <span className="inline-block rounded-xl bg-white px-4 py-3 text-base font-normal leading-relaxed text-gray-900 sm:px-6 sm:py-4 sm:text-lg md:text-xl lg:text-2xl">
-                  Generate sustainability intelligence reports and decarbonisation strategies with 3 simple steps
+                  Generate sustainability intelligence reports and decarbonisation strategies in 3 simple steps
                 </span>
               </p>
               <HeroButtons />
@@ -85,9 +81,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Logo marquee under video */}
-      <LogoMarquee images={flowImages} />
 
       {/* Problem Section */}
       <ProblemSection />
@@ -97,9 +90,6 @@ export default async function Home() {
 
       {/* How It Works Section */}
       <HowItWorksSection images={analyseImages} />
-
-      {/* Metrics / Social Proof Section */}
-      <MetricsSection />
 
       {/* Use Cases Section */}
       <UseCasesSection />

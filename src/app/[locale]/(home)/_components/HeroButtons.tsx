@@ -33,7 +33,7 @@ export function HeroButtons() {
           asChild
         >
           <Link href="#how-it-works">
-            Link to Technology
+            Solution
             <ArrowSquareOut
               size={20}
               weight="bold"
@@ -55,7 +55,7 @@ export function HeroButtons() {
               scrollToContact();
             }}
           >
-            Link to Contact Us
+             Contact Us
             <ArrowSquareOut
               size={20}
               weight="bold"

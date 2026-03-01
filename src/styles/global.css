@@ -561,7 +561,14 @@ main,
   scroll-behavior: smooth;
 }
 
-/* Header nav: letter border / stroke for white text */
+/* Header nav: letter border / stroke - dark bg uses light stroke */
+.bg-black .header-nav-text,
+.bg-black .header-logo span {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  paint-order: stroke fill;
+}
+
+/* Header nav: default (light bg) */
 .header-nav-text,
 .header-logo span {
   -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
